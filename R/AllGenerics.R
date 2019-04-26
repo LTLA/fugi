@@ -10,3 +10,6 @@ setGeneric("annotateRegions", function(GIObject, name, dat) standardGeneric ("an
 #' @rdname annotateInteractions
 setGeneric("annotateInteractions",function(GIObject, annotations) standardGeneric("annotateInteractions"))
 
+#' @export
+setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric ("calculateDistances"))
+
