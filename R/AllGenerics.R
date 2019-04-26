@@ -16,3 +16,9 @@ setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRU
 #' @export
 setGeneric("export.igraph",function(GIObject) standardGeneric ("export.igraph"))
 
+#' @export
+setGeneric("export.bed12",function(GIObject, fn=NULL, score="counts") standardGeneric ("export.bed12"))
+
+#' @export
+setGeneric("export.chiasig", function(GIObject, fn=NULL, score="counts") standardGeneric("export.chiasig"))
+
