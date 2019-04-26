@@ -184,7 +184,7 @@ setMethod("export.chiasig", "GenomicInteractions", function(GIObject, fn=NULL, s
 #'
 #' @importFrom rtracklayer asBED
 #' @importFrom IRanges PartitioningByWidth
-#' @importFrom S4Vectors elementNROWS
+#' @importFrom S4Vectors elementNROWS mcols
 #' @importFrom BiocGenerics relist
 #' @export
 #' @docType methods
@@ -213,8 +213,8 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
 
     scores = .getScore(x, score)
 
-    if (is.null(x$color)) {
-        x$color = "#000000"
+    if (is.null(mcols(x)$color)) {
+        mcols(x)$color = "#000000"
     }
 
     names = paste0(seqnames(regs)[a1], ":", start(regs)[a1] - 1 , "..", end(regs)[a1], "-",
@@ -238,7 +238,7 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
             "*"),
         thickStart=start(regs)[a1_cis],
         thickEnd=end(regs)[a2_cis],
-        itemRgb=x$color[!is_trans],
+        itemRgb=mcols(x)$color[!is_trans],
         blocks=cis_blocks
     )
 
@@ -262,7 +262,7 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
                      start(regs)[a2_trans]),
         thickEnd=c(end(regs)[a1_trans],
                    end(regs)[a2_trans]),
-        itemRgb=rep(x$color[is_trans], 2),
+        itemRgb=rep(mcols(x)$color[is_trans], 2),
         blocks=trans_blocks
     )
 
