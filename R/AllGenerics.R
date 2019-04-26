@@ -13,3 +13,6 @@ setGeneric("annotateInteractions",function(GIObject, annotations) standardGeneri
 #' @export
 setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric ("calculateDistances"))
 
+#' @export
+setGeneric("export.igraph",function(GIObject) standardGeneric ("export.igraph"))
+
