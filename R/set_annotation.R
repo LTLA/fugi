@@ -1,26 +1,31 @@
 #' Reset annotations made to a GenomicInteractions object
 #'
-#' This function removes all annotations from a GenomicInteractions object by
-#' deleting  all of the metadata columns associated with both anchors.
+#' This function removes all annotations from a \linkS4class{GenomicInteractions} object by
+#' deleting all of the metadata columns associated with both anchors.
 #'
-#' @param GIObject An annotated GenomicInteractions object
+#' @param GIObject An annotated GenomicInteractions object.
 #' @return invisible(1)
 #' @examples
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+#'
 #' resetAnnotations(hic_example_data)
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
 #'
 #' @docType methods
-#' @rdname resetAnnotations
-#' @export
-setGeneric("resetAnnotations", function(GIObject){standardGeneric ("resetAnnotations")})
-
 #' @export
 #' @rdname resetAnnotations
 #' @importFrom S4Vectors mcols<- 
-#' @importClassesFrom GenomicInteractions SimpleGenomicInteractions
-setMethod("resetAnnotations", "SimpleGenomicInteractions", function(GIObject){ 
+#' @importClassesFrom GenomicInteractions GenomicInteractions
+#' @importFrom IndexedRelations featureSets featureSets<-
+setMethod("resetAnnotations", "GenomicInteractions", function(GIObject){ 
     objName <- deparse(substitute(GIObject))
-    mcols(regions(GIObject)) <- NULL
+    fsets <- featureSets(GIObject) 
+    for (i in seq_along(fsets)) {
+        mcols(fsets[[i]]) <- NULL
+    }
+    featureSets(GIObject) <- fsets
     assign(objName, GIObject, envir = parent.frame())
     invisible(1)
 })
@@ -36,23 +41,31 @@ setMethod("resetAnnotations", "SimpleGenomicInteractions", function(GIObject){
 #' containing data with which to annotate the object. 
 #' @return invisible(1)
 #' 
-#' @rdname annotateRegions
 #' @docType methods
-#' @export
-#' 
 #' @examples 
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+#'
 #' chip <- runif(n = length(regions(hic_example_data)), max = 1000)
 #' annotateRegions(hic_example_data, "chip", chip)
-setGeneric("annotateRegions", function(GIObject, name, dat) standardGeneric ("annotateRegions"))
-
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+#'
 #' @export
 #' @rdname annotateRegions
 #' @importFrom S4Vectors mcols<- 
-#' @importClassesFrom GenomicInteractions SimpleGenomicInteractions
+#' @importClassesFrom GenomicInteractions GenomicInteractions
+#' @importFrom IndexedRelations featureSets featureSets<-
 setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), function(GIObject, name, dat) {
     objName <- deparse(substitute(GIObject))
-    mcols(regions(GIObject)) <- dat
+
+    regs <- featureSets(GIObject)
+    if (length(regs)==2L) {
+        stop("expecting one set of regions only")
+    }
+    mcols(regs[[1]])[[name]] <- dat
+    featureSets(GIObject) <- regs
+
     assign(objName, GIObject, envir = parent.frame())
     invisible(1)
 })
@@ -75,26 +88,32 @@ setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), fu
 #' @param annotations A list containing GRanges (or GRangesList) objects with which to annotate
 #'             the GenomicInteractions object.
 #' @return invisible(1)
-#' @rdname annotateInteractions
 #' @docType methods
-#' @export
 #' 
 #' @examples
-#' 
-#' library("GenomicRanges")
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+#'
 #' data(mm9_refseq_promoters)
-#' mm9_refseq_grl = split(mm9_refseq_promoters, mm9_refseq_promoters$id)
+#' mm9_refseq_grl <- split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 #' annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
-setGeneric("annotateInteractions",function(GIObject, annotations) standardGeneric("annotateInteractions"))
-
+#' mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+#'
 #' @export
 #' @rdname annotateInteractions
 #' @importFrom S4Vectors queryHits subjectHits
 #' @importFrom GenomicInteractions GenomicInteractions
+#' @importFrom IndexedRelations featureSets featureSets<-
 setMethod("annotateInteractions", c("GenomicInteractions", "list"), function(GIObject, annotations) {
     objName <- deparse(substitute(GIObject))
-    mcols.reg <- mcols(regions(GIObject))
+
+    regs <- featureSets(GIObject)
+    if (length(regs)==2L) {
+        stop("expecting one set of regions only")
+    }
+
+    mcols.reg <- mcols(regs[[1]])
     mcols.reg$node.class <- NA
     if (is.null(names(annotations))){
         names(annotations) <- sprintf("FEATURE%i", seq_along(annotations))
@@ -110,7 +129,7 @@ setMethod("annotateInteractions", c("GenomicInteractions", "list"), function(GIO
         field_name <- paste(name, "id", sep=".")
         feature_names <- feature_names_list[[name]]
         mcols.reg[[field_name]] <- NA
-        reg.ol <- findOverlaps(regions(GIObject), annotations[[name]])
+        reg.ol <- findOverlaps(regs[[1]], annotations[[name]])
         mcols.reg[[field_name]][ unique(queryHits(reg.ol)) ] <- split(feature_names[subjectHits(reg.ol)], 
                                                                       queryHits(reg.ol) )
         mcols.reg$node.class <- ifelse(is.na(mcols.reg$node.class) & !is.na(mcols.reg[[field_name]]), 
@@ -119,7 +138,9 @@ setMethod("annotateInteractions", c("GenomicInteractions", "list"), function(GIO
 
     mcols.reg$node.class <- ifelse(is.na(mcols.reg$node.class), 
                                   "distal", mcols.reg$node.class)
-    mcols(regions(GIObject)) <- mcols.reg
+    mcols(regs[[1]]) <- mcols.reg
+
+    featureSets(GIObject) <- regs
     assign(objName, GIObject, envir = parent.frame())
     invisible(1)
 })
