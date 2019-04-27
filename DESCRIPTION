@@ -1,27 +1,33 @@
-Package: GenomicInteractions
-Type: Package
-Title: R package for handling genomic interaction data
-URL: https://github.com/ComputationalRegulatoryGenomicsICL/GenomicInteractions/
-Version: 1.17.0
-Date: 2018-04-22
-Author: Harmston, N., Ing-Simmons, E., Perry, M., Baresic, A., Lenhard,
-    B.
-Maintainer: Liz Ing-Simmons <liz.ingsimmons@gmail.com>
+Package: fugi 
+Version: 0.99.0
+Date: 2019-04-22
+Title: Further Utilities for Genomic Interactions
+Description: Provides high-level methods for manipulating the GenomicInteractions class
+    to analyze ChIA-PET/Hi-C experiments. This includs annotation of genomic features 
+    with interaction information and producing various plots / statistics.
+Authors@R: c(person("Nathan", "Harmston", role="aut"),
+    person("Elizabth", "Ing-Simmons", role=c("cre", "aut"), email="liz.ing-simmons12@csc.mrc.ac.uk"),
+    person("Malcolm", "Perry", role="aut", email="mgperry32@gmail.com"),
+    person("Anja", "Baresic", role="aut"),
+    person("Boris", "Lenhard", role="aut"),
+    person("Aaron", "Lun", role="aut"))
+Depends: GenomicInteractions
 Imports:
+    IndexedRelations,
+    BiocGenerics,
+    S4Vectors,
+    GenomicRanges,
+    IRanges,
+    GenomeInfoDb,
     Rsamtools,
     rtracklayer,
-    GenomicRanges (>= 1.29.6),
-    IRanges,
-    BiocGenerics (>= 0.15.3),
     data.table,
     stringr,
-    GenomeInfoDb,
     ggplot2,
     grid,
     gridExtra,
     methods,
     igraph,
-    S4Vectors (>= 0.13.13),
     dplyr,
     Gviz,
     Biobase,
@@ -34,12 +40,6 @@ Suggests:
     BiocStyle,
     testthat
 VignetteBuilder: knitr
-Description: R package for handling Genomic interaction data, such as
-    ChIA-PET/Hi-C, annotating genomic features with interaction
-    information and producing various plots / statistics.
 biocViews: Software,Infrastructure,DataImport,DataRepresentation,HiC
 License: GPL-3
-Depends:
-    R (>= 3.5),
-    InteractionSet
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
