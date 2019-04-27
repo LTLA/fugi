@@ -4,12 +4,12 @@
 \alias{plotAvgViewpoint}
 \title{Plot coverage around a set of virtual 4C viewpoints}
 \usage{
-plotAvgViewpoint(x, left_dist = 100000, right_dist = 100000,
-  ylab = "Average signal", xlab = "Relative position", fix = "center",
-  ...)
+plotAvgViewpoint(x, left_dist = 1e+05, right_dist = 1e+05,
+  ylab = "Average signal", xlab = "Relative position",
+  fix = "center", ...)
 }
 \arguments{
-\item{x}{A GInteractions object which is output from viewPoint}
+\item{x}{A \linkS4class{GenomicInteractions} object which is output from viewPoint}
 
 \item{left_dist}{Distance 'left' of interactions to consider, in bp.}
 
@@ -33,7 +33,8 @@ e.g. promoters. This function requires the output of `viewPoint()` as input.
 }
 \examples{
 data(hic_example_data)
-library(GenomicRanges)
+hic_example_data <- updateObject(hic_example_data)
+
 pos <- GRanges(seqnames="chr15", ranges=IRanges(start=59477709, end=59482708))
 region <- GRanges(seqnames="chr15", ranges=IRanges(start=58980209, end=59980208))
 vp <- viewPoint(hic_example_data, pos, region)

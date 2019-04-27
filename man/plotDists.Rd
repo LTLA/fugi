@@ -2,13 +2,13 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotDists}
 \alias{plotDists}
-\title{Plots a histogram of interaction distances for a GInteractions Object}
+\title{Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} Object}
 \usage{
-plotDists(GIObject, breaks = c(0, 1000, 5000, 10000, 50000, 100000, 500000,
-  1000000, 2000000), method = "midpoint")
+plotDists(GIObject, breaks = c(0, 1000, 5000, 10000, 50000, 1e+05, 5e+05,
+  1e+06, 2e+06), method = "midpoint")
 }
 \arguments{
-\item{GIObject}{A GInteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
 \item{breaks}{A numeric vector of breaks for the histogram}
 
@@ -18,9 +18,10 @@ plotDists(GIObject, breaks = c(0, 1000, 5000, 10000, 50000, 100000, 500000,
 A ggplot2 plot
 }
 \description{
-Plots a histogram of interaction distances for a GInteractions Object
+Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} Object
 }
 \examples{
 data(hic_example_data)
+hic_example_data <- updateObject(hic_example_data)
 plotDists(hic_example_data)
 }

@@ -7,7 +7,7 @@
 plotCounts(GIObject, normalise = FALSE, cut = 10)
 }
 \arguments{
-\item{GIObject}{A GInteractions object.}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
 \item{normalise}{Logical. If TRUE, plots proportion of total reads instead of count.}
 
@@ -21,6 +21,8 @@ Plot a bar chart of the number of interactions supported by different numbers of
 }
 \examples{
 data(hic_example_data)
+hic_example_data <- updateObject(hic_example_data)
+
 plotCounts(hic_example_data)
 plotCounts(hic_example_data, normalise=TRUE)
 }

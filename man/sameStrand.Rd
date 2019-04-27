@@ -7,7 +7,7 @@
 sameStrand(GIObject)
 }
 \arguments{
-\item{GIObject}{A GInteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object}
 }
 \value{
 A logical vector denoting with TRUE if both anchors of an interaction

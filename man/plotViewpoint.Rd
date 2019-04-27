@@ -7,7 +7,7 @@
 plotViewpoint(x, region, ylab = "Signal", xlab = NULL, ...)
 }
 \arguments{
-\item{x}{a GInteractions object which is output from viewPoint}
+\item{x}{a \linkS4class{GenomicInteractions} object which is output from viewPoint}
 
 \item{region}{The genomic region to plot}
 
@@ -28,7 +28,8 @@ region you wish to plot.
 }
 \examples{
 data(hic_example_data)
-library(GenomicRanges)
+hic_example_data <- updateObject(hic_example_data)
+
 pos <- GRanges(seqnames="chr15", ranges=IRanges(start=59477709, end=59482708))
 region <- GRanges(seqnames="chr15", ranges=IRanges(start=58980209, end=59980208))
 vp <- viewPoint(hic_example_data, pos, region)

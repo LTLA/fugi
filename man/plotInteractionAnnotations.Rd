@@ -2,13 +2,13 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotInteractionAnnotations}
 \alias{plotInteractionAnnotations}
-\title{Plot a donut plot of interaction types for an annotated GInteractions object}
+\title{Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object}
 \usage{
-plotInteractionAnnotations(GIObject, node.classes = NULL, viewpoints = NULL,
-  other = 0, keep.order = FALSE, legend = FALSE)
+plotInteractionAnnotations(GIObject, node.classes = NULL,
+  viewpoints = NULL, other = 0, keep.order = FALSE, legend = FALSE)
 }
 \arguments{
-\item{GIObject}{A GInteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
 \item{node.classes}{Optional. All node.classes to include in the analysis.
 Default: all node classes.}
@@ -29,11 +29,13 @@ plot. If FALSE, donut plot is annotated with category names.}
 A ggplot2 plot
 }
 \description{
-Plot a donut plot of interaction types for an annotated GInteractions object
+Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object
 }
 \examples{
 library("GenomicRanges")
 data(hic_example_data)
+hic_example_data <- updateObject(hic_example_data)
+
 data(mm9_refseq_promoters)
 mm9_refseq_grl = split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))

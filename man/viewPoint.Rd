@@ -7,7 +7,7 @@
 viewPoint(x, bait, region = NULL, ...)
 }
 \arguments{
-\item{x}{A GInteractions object.}
+\item{x}{A \linkS4class{GenomicInteractions} object.}
 
 \item{bait}{A GRanges object describing bait regions.}
 
@@ -17,10 +17,10 @@ region to look for bait interactions in.}
 \item{...}{additional arguments to findoverlaps}
 }
 \value{
-A GInteractions object.
+A \linkS4class{GenomicInteractions} object.
 }
 \description{
-This function creates a GInteractions object representing interactions 
+This function creates a \linkS4class{GenomicInteractions} object representing interactions 
 originating at a given viewpoint ("bait"), or set of viewpoints. This is 
 similar to the idea of a virtual 4C experiment where you are interested in 
 interactions with a specific region.
@@ -39,7 +39,8 @@ as a wig or bedgraph file.
 }
 \examples{
 data(hic_example_data)
-library(GenomicRanges)
+hic_example_data <- updateObject(hic_example_data)
+
 pos <- GRanges(seqnames="chr15", ranges=IRanges(start=59477709, end=59482708))
 region <- GRanges(seqnames="chr15", ranges=IRanges(start=58980209, end=59980208))
 vp <- viewPoint(hic_example_data, pos, region)

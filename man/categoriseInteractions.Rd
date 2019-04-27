@@ -4,10 +4,11 @@
 \alias{categoriseInteractions}
 \title{Get the numbers of interaction types existing in your data}
 \usage{
-categoriseInteractions(GIObject, node.classes = NULL, viewpoints = NULL)
+categoriseInteractions(GIObject, node.classes = NULL,
+  viewpoints = NULL)
 }
 \arguments{
-\item{GIObject}{A GInteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
 \item{node.classes}{Optional. All node.classes to include in the analysis.
 Default: all node classes.}
@@ -24,6 +25,8 @@ Get the numbers of interaction types existing in your data
 \examples{
 library("GenomicRanges")
 data(hic_example_data)
+hic_example_data <- updateObject(hic_example_data)
+
 data(mm9_refseq_promoters)
 mm9_refseq_grl = split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
