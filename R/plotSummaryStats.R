@@ -18,6 +18,7 @@
 #'
 #' @examples
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
 #' plotSummaryStats(hic_example_data)
 plotSummaryStats <- function(GIObject, other=5, cut=10){
   p1 <- plotCisTrans(GIObject)
@@ -51,6 +52,7 @@ plotSummaryStats <- function(GIObject, other=5, cut=10){
 #'
 #' @examples
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
 #' plotCisTrans(hic_example_data)
 plotCisTrans <- function(GIObject){
 
@@ -99,6 +101,7 @@ plotCisTrans <- function(GIObject){
 #'
 #' @examples
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
 #' plotDists(hic_example_data)
 plotDists <- function(GIObject, breaks=c(0, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 2000000), method="midpoint"){
 
@@ -145,6 +148,8 @@ plotDists <- function(GIObject, breaks=c(0, 1000, 5000, 10000, 50000, 100000, 50
 #' @examples
 #' library("GenomicRanges")
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#'
 #' data(mm9_refseq_promoters)
 #' mm9_refseq_grl = split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 #' annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
@@ -215,6 +220,8 @@ plotInteractionAnnotations <- function(GIObject, node.classes=NULL, viewpoints=N
 #' @examples
 #' library("GenomicRanges")
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#'
 #' data(mm9_refseq_promoters)
 #' mm9_refseq_grl = split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 #' annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
@@ -259,6 +266,8 @@ categoriseInteractions <- function(GIObject, node.classes=NULL, viewpoints=NULL)
 #'
 #' @examples
 #' data(hic_example_data)
+#' hic_example_data <- updateObject(hic_example_data)
+#'
 #' plotCounts(hic_example_data)
 #' plotCounts(hic_example_data, normalise=TRUE)
 plotCounts <- function(GIObject, normalise=FALSE, cut = 10){
