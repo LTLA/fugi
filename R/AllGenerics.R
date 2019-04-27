@@ -117,6 +117,18 @@ setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBe
 #' @export
 setGeneric("subsetByFeatures",function(GIObject, features, feature.class=NULL){standardGeneric ("subsetByFeatures")})
 
+##############################
+### summarization generics ###
+##############################
+
+#' @export
+setGeneric("summariseByFeatures", function(GIObject, features, feature.name, distance.method="midpoint", annotate.self=FALSE)
+    standardGeneric("summariseByFeatures"))
+
+#' @export
+setGeneric("summariseByFeaturePairs",function(GIObject, features.one, feature.name.one, features.two, feature.name.two)
+    standardGeneric ("summariseByFeaturePairs"))
+
 #############################
 ### miscellanous generics ###
 #############################
