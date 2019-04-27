@@ -234,7 +234,7 @@ setMethod("summariseByFeatures", "GenomicInteractions",
 setMethod("summariseByFeaturePairs", "GenomicInteractions", 
     function(GIObject, features.one, feature.name.one, features.two, feature.name.two)
 {
-    if(!.has_annotation(GIObject)) {
+    if(!.has_annotations(GIObject)) {
         stop("GIObject has not been annotated")
     }
       

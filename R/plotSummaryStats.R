@@ -232,7 +232,7 @@ categoriseInteractions <- function(GIObject, node.classes=NULL, viewpoints=NULL)
   }
   
   if(is.null(node.classes)){
-    node.classes <- unique(regions(GIObject)$node.class)
+    node.classes <- unique(annotationFeatures(GIObject))
   }
 
   if(is.null(viewpoints)) {

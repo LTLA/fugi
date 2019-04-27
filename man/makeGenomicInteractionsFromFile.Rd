@@ -36,8 +36,8 @@ older files.
 \examples{
 
 k562.rep1 <- makeGenomicInteractionsFromFile(
-       system.file(package="GenomicInteractions", "extdata", "k562.rep1.cluster.pet3+.txt"),
-       type="chiapet.tool", experiment_name="k562", description="k562 pol2 8wg16")
+    system.file(package="fugi", "extdata", "k562.rep1.cluster.pet3+.txt"),
+    type="chiapet.tool", experiment_name="k562", description="k562 pol2 8wg16")
 
 k562.rep1
 
