@@ -4,14 +4,19 @@
 #' GenomicInteractions object.
 #'
 #' @name getters
-#' @param GIObject A Gnteractions object
+#' @param GIObject A \linkS4class{GenomicInteractions} object
 #' @rdname getters
 #' 
-#' @return For 'anchorOne' and 'anchorTwo', a GRanges. For 'interactionCounts', 
-#' a numeric vector with counts for each interaction in the object. For
-#'   'description' and 'name',  a character vector with
-#'   length 1. For 'annotationFeatures', a character vector of features with
-#'   which the object was previously annotated, or 'NA' if the object is unannotated.
+#' @return For 'anchorOne' and 'anchorTwo', a GRanges. 
+#'
+#' For 'interactionCounts', a numeric vector with counts for each interaction in the object.
+#'
+#' For 'description' and 'name',  a character vector with length 1. 
+#'
+#' For 'annotationFeatures', a character vector of features with
+#' which the object was previously annotated, or 'NA' if the object is unannotated.
+#'
+#' For 'seqinfo', a \linkS4class{Seqinfo} object is returned for the regions in \code{GIObject}.
 #'
 #' @examples
 #' anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), 
@@ -88,3 +93,14 @@ setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
     out <- annotationFeatures(x)
     length(out) > 1L || is.na(out)
 }
+
+#' @export
+#' @rdname getters
+#' @importFrom GenomeInfoDb seqinfo
+setMethod("seqinfo", "GenomicInteractions", function(x) {
+    regs <- featureSets(x)
+    if (length(regs)==2L) {
+        stop("expecting one set of regions only")
+    }
+    seqinfo(regs[[1]])
+})

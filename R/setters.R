@@ -4,7 +4,7 @@
 #' \linkS4class{GenomicInteractions} object.
 #'
 #' @name setters
-#' @param GIObject A GenomicInteractions object
+#' @param GIObject A \linkS4class{GenomicInteractions} object
 #' @param value A vector to replace a slot in the object
 #' @return GenomicInteractions object
 #' @rdname setters
@@ -56,4 +56,21 @@ setReplaceMethod("interactionCounts", "GenomicInteractions", function(GIObject, 
         value = rep(value, length(GIObject))
     mcols(GIObject)$counts <- value
     GIObject
+})
+
+
+#' @export
+#' @rdname setters
+#' @inheritParams GenomeInfoDb::'seqinfo<-'
+#' @importFrom GenomeInfoDb seqinfo<-
+setMethod("seqinfo<-", "GenomicInteractions", function(x, new2old = NULL, 
+    pruning.mode = c("error", "coarse", "fine", "tidy"), value) 
+{
+    regs <- featureSets(x)
+    if (length(regs)==2L) {
+        stop("expecting one set of regions only")
+    }
+    seqinfo(regs[[1]], new2old=new2old, pruning.mode=match.arg(pruning.mode)) <- value
+    featureSets(x) <- regs
+    x
 })
