@@ -91,6 +91,22 @@ setGeneric("is.trans",function(GIObject) standardGeneric("is.trans"))
 #' @export
 setGeneric("is.cis",function(GIObject) standardGeneric("is.cis"))
 
+#######################
+### setter generics ###
+#######################
+
+#' @rdname setters
+#' @export
+setGeneric("name<-",function(GIObject, value) standardGeneric("name<-"))
+
+#' @rdname setters
+#' @export
+setGeneric("interactionCounts<-",function(GIObject, value) standardGeneric("interactionCounts<-"))
+
+#############################
+### miscellanous generics ###
+#############################
+
 #' @export
 setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric("calculateDistances"))
 
