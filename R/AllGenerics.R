@@ -103,6 +103,13 @@ setGeneric("name<-",function(GIObject, value) standardGeneric("name<-"))
 #' @export
 setGeneric("interactionCounts<-",function(GIObject, value) standardGeneric("interactionCounts<-"))
 
+###########################
+### processing generics ###
+###########################
+
+#' @export
+setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBetweenAnchors"))
+
 #############################
 ### miscellanous generics ###
 #############################
