@@ -1,5 +1,5 @@
 ---
-title: "HiC vignette for GenomicInteractions package"
+title: "HiC vignette for fugi package"
 output:
   html_document:
     keep_md: yes
@@ -8,7 +8,7 @@ output:
 
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{GenomicInteractions-HiC}
+%\VignetteIndexEntry{fugi-HiC}
 -->
 
 ```{r options, echo=FALSE}
@@ -17,7 +17,7 @@ options("scipen"=10, "digits"=5)
 
 ## Introduction
 
-This vignette shows you how GenomicInteractions can be used to investigate significant interactions in HiC data that has been analysed using [HOMER](http://homer.salk.edu/homer/) software [1]. GenomicInteractions can take a HOMER [interaction file](http://homer.salk.edu/homer/interactions/HiCinteractions.html) as input. 
+This vignette shows you how fugi can be used to investigate significant interactions in HiC data that has been analysed using [HOMER](http://homer.salk.edu/homer/) software [1]. fugi can take a HOMER [interaction file](http://homer.salk.edu/homer/interactions/HiCinteractions.html) as input. 
 
 HiC data comes from [chromosome conformation capture](http://en.wikipedia.org/wiki/Chromosome_conformation_capture) followed by high-throughput sequencing. Unlike 3C, 4C or 5C, which target specific regions, it can provide genome-wide information about the spatial proximity of regions of the genome. The raw data takes the form of paired-end reads connecting restriction fragments. The resolution of a HiC experiment is limited by the number of paired-end sequencing reads produced and by the sizes of restriction fragments. To increase the power to distinguish real interactions from random noise, HiC data is commonly analysed in bins from 20kb - 1Mb. There are a variety of tools available for binning the data, controlling for noise (e.g. self-ligations of restriction fragments), and finding significant interactions. 
 
@@ -29,15 +29,11 @@ Load the data by specifying the file location and experiment type.  You can also
 
 ```{r imports, warning=F, results="hide", message=FALSE}
 library(Gviz)
-library(GenomicInteractions)
-library(GenomicRanges)
-library(InteractionSet)
-
+library(fugi)
 ```
 
 ```{r}
-hic_file <- system.file("extdata", "Seitan2013_WT_100kb_interactions.txt", 
-                        package="GenomicInteractions")
+hic_file <- system.file("extdata", "Seitan2013_WT_100kb_interactions.txt", package="fugi")
 
 hic_data <- makeGenomicInteractionsFromFile(hic_file, 
                     type="homer", 
@@ -56,15 +52,14 @@ head(hic_data$LogP)
 hic_data$p.value <- exp(hic_data$LogP)
 ```
 
-The set of all regions included in the object can be accessed using `regions()`, or the first and second anchors of the interactions can be accessed using `anchors()`. You can also choose to just return the indices of the ranges of `regions()` that correspond to the anchors.
-
-We also provide convenience functions `anchorOne` and `anchorTwo` to return the first/second anchors as GRanges.
+The set of all regions included in the object can be accessed using `regions()`, or the first and second anchors of the interactions can be accessed using `anchors()`. 
+We provide convenience functions `anchorOne` and `anchorTwo` to return the first/second anchors as GRanges.
 
 ```{r}
 regions(hic_data)
 anchors(hic_data, type = "first")
-head(anchors(hic_data, type = "first", id = TRUE))
 anchorOne(hic_data)
+anchorTwo(hic_data)
 ```
 
 We can check that the anchors are of the expected size (100kb).

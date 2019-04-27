@@ -1,5 +1,5 @@
-e--
-title: "Package Vignette for Genomic Interactions: ChIA-PET data"
+---
+title: "Package Vignette for fugi: ChIA-PET data"
 output: 
   pdf_document: default
   html_document:
@@ -8,7 +8,7 @@ output:
     
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{GenomicInteractions-ChIAPET}
+%\VignetteIndexEntry{fugi-ChIAPET}
 -->
 
 ```{r global_chunk_opts, echo=F, include=F, eval=FALSE}
@@ -34,12 +34,10 @@ interactions in the sample.
 
 ## Imports
 
-First we need to load the GenomicInteractions package, and the mm9 reference genome:
+First we need to load the fugi package, and the mm9 reference genome:
 
 ```{r imports, warning=F, results="hide"}
-library(GenomicInteractions)
-library(InteractionSet)
-library(GenomicRanges)
+library(fugi)
 ```
 
 ## Data
@@ -55,8 +53,7 @@ line. The data should therefore give us an insight into the processes which regu
 that are being actively transcribed.
 
 ```{r load_data}
-chiapet.data = system.file("extdata/k562.rep1.cluster.pet3+.txt", 
-                           package="GenomicInteractions")
+chiapet.data = system.file("extdata/k562.rep1.cluster.pet3+.txt", package="fugi")
 
 k562.rep1 = makeGenomicInteractionsFromFile(chiapet.data, 
                                 type="chiapet.tool", 
@@ -81,7 +78,7 @@ As can the data from the ChIA-PET experiment:
 
 ```{r gi_data_access}
 head(interactionCounts(k562.rep1))
-head((k562.rep1)$fdr)
+head(k562.rep1$fdr)
 hist(-log10(k562.rep1$p.value))
 ```
 
