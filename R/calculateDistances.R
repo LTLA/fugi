@@ -1,6 +1,7 @@
 #' Calculate interaction distances
 #'
-#' This will be deprecated in favor of the \code{\link{pairdist}} function from \pkg{GenomicInteractions}.
+#' This computes the linear distances between anchoring regions for each interaction,
+#' simply by calling the \code{\link{pairdist}} function from \pkg{GenomicInteractions}.
 #' 
 #' @param GIObject A \linkS4class{GenomicInteractions} object
 #' @param method Character vector indicating how to calculate distances, must
@@ -23,7 +24,6 @@
 #' @export
 #' @importFrom GenomicInteractions pairdist
 setMethod("calculateDistances", "GenomicInteractions", function(GIObject, method="midpoint", floor=TRUE) { 
-    .Deprecated(new="GenomicInteractions::pairdist")
     if (method=="midpoint"){
         distances <- pairdist(GIObject, type = "mid")
     } else if(method=="outer"){
