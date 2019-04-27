@@ -73,6 +73,7 @@ setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
     if (length(regs)==2L) {
         stop("expecting one set of regions only")
     }
+    regs <- regs[[1]]
 
     if ("node.class" %in% names(mcols(regs))) {
         annotation <- regs$node.class
@@ -82,3 +83,8 @@ setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
 
     annotation
 })
+
+.has_annotations <- function(x) {
+    out <- annotationFeatures(x)
+    length(out) > 1L || is.na(out)
+}

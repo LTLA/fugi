@@ -29,7 +29,7 @@ plotSummaryStats <- function(GIObject, other=5, cut=10){
     p4 <- NULL
   }
   
-  if ("node.class" %in% names(elementMetadata(GIObject@regions))) {
+  if (.has_annotations(GIObject)) {
     p3 <- plotInteractionAnnotations(GIObject, other=other)
   }else{
     p3 <- NULL
@@ -220,7 +220,7 @@ plotInteractionAnnotations <- function(GIObject, node.classes=NULL, viewpoints=N
 #' annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
 #' categoriseInteractions(hic_example_data)
 categoriseInteractions <- function(GIObject, node.classes=NULL, viewpoints=NULL){
-  if(!("node.class" %in% names(GIObject@regions@elementMetadata))){
+  if(!.has_annotations(GIObject)) {
     stop("object not annotated!")
   }
   
