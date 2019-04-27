@@ -110,6 +110,13 @@ setGeneric("interactionCounts<-",function(GIObject, value) standardGeneric("inte
 #' @export
 setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBetweenAnchors"))
 
+###########################
+### subsetting generics ###
+###########################
+
+#' @export
+setGeneric("subsetByFeatures",function(GIObject, features, feature.class=NULL){standardGeneric ("subsetByFeatures")})
+
 #############################
 ### miscellanous generics ###
 #############################
