@@ -14,13 +14,13 @@
 #'   which the object was previously annotated, or 'NA' if the object is unannotated.
 #'
 #' @examples
-#'
-#' library(GenomicRanges)
-#'
-#' anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), IRanges(c(10, 20, 30, 20), width=5))
-#' anchor.two = GRanges(c("chr1", "chr1", "chr1", "chr2"), IRanges(c(100, 200, 300, 50), width=5))
+#' anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), 
+#'      IRanges(c(10, 20, 30, 20), width=5))
+#' anchor.two = GRanges(c("chr1", "chr1", "chr1", "chr2"), 
+#'      IRanges(c(100, 200, 300, 50), width=5))
 #' interaction_counts = sample(1:10, 4)
-#' test <- GenomicInteractions(anchor.one, anchor.two, counts=interaction_counts)
+#' test <- GenomicInteractions(anchor.one, anchor.two, 
+#'      counts=interaction_counts)
 #'
 #' name(test)
 #' description(test)
@@ -28,67 +28,57 @@
 #' anchorTwo(test)
 #' interactionCounts(test)
 #'
-## GENERICS
-
-#' @rdname getters
-#' @export
-setGeneric("name",function(GIObject){standardGeneric ("name")})
-
-#' @rdname getters
-#' @export
-setGeneric("anchorOne",function(GIObject){standardGeneric ("anchorOne")})
-
-#' @rdname getters
-#' @export
-setGeneric("anchorTwo",function(GIObject){standardGeneric ("anchorTwo")})
-
-#' @rdname getters
-#' @export
-setGeneric("interactionCounts",function(GIObject){standardGeneric ("interactionCounts")})
-
-#' @rdname getters
-#' @export
-setGeneric("annotationFeatures",function(GIObject){standardGeneric ("annotationFeatures")})
-
-## METHODS
+NULL
 
 #' @rdname getters
 #' @export
 #' @aliases name
-setMethod("name", "GInteractions", function(GIObject){ 
-  return(GIObject@metadata$experiment_name) } )
+#' @importFrom S4Vectors metadata
+setMethod("name", "GenomicInteractions", function(GIObject) metadata(GIObject)$experiment_name)
 
 #' @rdname getters
 #' @inheritParams Biobase::description
 #' @importMethodsFrom Biobase description
 #' @export
-setMethod("description", c("GInteractions"), function(object){ 
-  return(object@metadata$description) } )
+#' @importFrom S4Vectors metadata
+setMethod("description", "GenomicInteractions", function(object) metadata(object)$description)
 
 #' @rdname getters
 #' @export
-setMethod("anchorOne", "GInteractions", function(GIObject){ 
-  return(anchors(GIObject, type = "first")) } )
+#' @importFrom GenomicInteractions anchors
+setMethod("anchorOne", "GenomicInteractions", function(GIObject)  anchors(GIObject, type = 1)) 
 
 #' @rdname getters
 #' @export
-setMethod("anchorTwo", "GInteractions", function(GIObject){ 
-  return(anchors(GIObject, type = "second")) } )
-
-## N.B. this may not apply to all GInteractions objects
-#' @rdname getters
-#' @export
-setMethod("interactionCounts", "GInteractions", function(GIObject){
-  if (!"counts" %in% names(elementMetadata(GIObject))){
-    warning("'counts' not in mcols of object; will return NULL")
-  }
-  return(GIObject@elementMetadata$counts) })
+#' @importFrom GenomicInteractions anchors
+setMethod("anchorTwo", "GenomicInteractions", function(GIObject) anchors(GIObject, type = 2))
 
 #' @rdname getters
 #' @export
-setMethod("annotationFeatures", "GInteractions", function(GIObject){
-  if( "node.class" %in% names(elementMetadata(GIObject@regions))) {
-    annotation = unique(GIObject@regions$node.class)
-  } else { annotation = NA_character_ }
-  return(annotation)
-} )
+#' @importFrom S4Vectors mcols
+setMethod("interactionCounts", "GenomicInteractions", function(GIObject){
+    ## N.B. this may not apply to all GenomicInteractions objects
+    if (!"counts" %in% names(mcols(GIObject))){
+        warning("'counts' not in mcols of object; will return NULL")
+    }
+    mcols(GIObject)$counts
+})
+
+#' @rdname getters
+#' @export
+#' @importFrom IndexedRelations featureSets
+#' @importFrom S4Vectors mcols
+setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
+    regs <- featureSets(GIObject)
+    if (length(regs)==2L) {
+        stop("expecting one set of regions only")
+    }
+
+    if ("node.class" %in% names(mcols(regs))) {
+        annotation <- regs$node.class
+    } else { 
+        annotation <- NA_character_ 
+    }
+
+    annotation
+})
