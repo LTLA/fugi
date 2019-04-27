@@ -4,7 +4,7 @@
 #' @param fn        A filename to write the object to
 #' @param score     Which metadata column to export as score
 #'
-#' Exports a \linkS4class{GInteractions} object to BED12 format, and writes to a specified file. If filename is not specified,
+#' Exports a \linkS4class{GenomicInteractions} object to BED12 format, and writes to a specified file. If filename is not specified,
 #' then a data.frame containing the information is returned.
 #'
 #' Bed12 files provide a method for visualising interactions, it is not a good format for storing all of the data associated

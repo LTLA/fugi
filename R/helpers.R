@@ -1,6 +1,6 @@
 #' Interaction Type Helpers
 #'
-#' Functions to classify interactions within GInteractions objects.
+#' Functions to classify interactions within \linkS4class{GenomicInteractions} objects.
 #' \itemize{
 #'     \item "isInteractionType" takes two character arguments which are
 #'           annotated node classes and returns interactions between them.
@@ -10,7 +10,7 @@
 #'                \item{t}{terminator} }
 #'     \item "is.trans" & "is.cis" select trans-chromosomal and
 #'           intra-chromosomal interactions, respectively }
-#' @param GIObject A GInteractions object
+#' @param GIObject A \linkS4class{GenomicInteractions} object
 #' @return A logical vector
 #' @examples 
 #' data(hic_example_data)

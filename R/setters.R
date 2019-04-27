@@ -1,7 +1,7 @@
-#' Functions to set data held in a GInteractions object.
+#' Functions to set data held in a \linkS4class{GenomicInteractions} object.
 #'
 #' Use these functions to set data stored in each of the slots of a
-#' GInteractions object.
+#' \linkS4class{GenomicInteractions} object.
 #'
 #' @name setters
 #' @param GIObject A GenomicInteractions object
