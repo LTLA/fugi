@@ -23,7 +23,6 @@
 #' @importFrom data.table data.table fread .N
 #'
 #' @examples
-#'
 #' k562.rep1 <- makeGenomicInteractionsFromFile(
 #'     system.file(package="fugi", "extdata", "k562.rep1.cluster.pet3+.txt"),
 #'     type="chiapet.tool", experiment_name="k562", description="k562 pol2 8wg16")
@@ -31,7 +30,6 @@
 #' k562.rep1
 #'
 #' @export
-
 makeGenomicInteractionsFromFile = function(fn, type, experiment_name="", description="", chr_names = NULL){
 	em = NULL
     if (type == "chiapet.tool") {

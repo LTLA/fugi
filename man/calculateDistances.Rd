@@ -25,7 +25,8 @@ An vector containing the distances between anchors/GRanges,
         NA if on different chromosomes, rounded down to the nearest bp.
 }
 \description{
-This will be deprecated in favor of the \code{\link{pairdist}} function from \pkg{GenomicInteractions}.
+This computes the linear distances between anchoring regions for each interaction,
+simply by calling the \code{\link{pairdist}} function from \pkg{GenomicInteractions}.
 }
 \examples{
 anchor.one <- GRanges(c("chr1", "chr1", "chr1", "chr1"), 
