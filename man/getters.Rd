@@ -14,6 +14,7 @@
 \alias{anchorTwo,GenomicInteractions-method}
 \alias{interactionCounts,GenomicInteractions-method}
 \alias{annotationFeatures,GenomicInteractions-method}
+\alias{seqinfo,GenomicInteractions-method}
 \title{Functions to access data held in a GenomicInteractions object.}
 \usage{
 name(GIObject)
@@ -37,18 +38,25 @@ annotationFeatures(GIObject)
 \S4method{interactionCounts}{GenomicInteractions}(GIObject)
 
 \S4method{annotationFeatures}{GenomicInteractions}(GIObject)
+
+\S4method{seqinfo}{GenomicInteractions}(x)
 }
 \arguments{
-\item{GIObject}{A Gnteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
 \item{object}{Object, possibly derived from class \code{\link{eSet-class}}.}
 }
 \value{
-For 'anchorOne' and 'anchorTwo', a GRanges. For 'interactionCounts', 
-a numeric vector with counts for each interaction in the object. For
-  'description' and 'name',  a character vector with
-  length 1. For 'annotationFeatures', a character vector of features with
-  which the object was previously annotated, or 'NA' if the object is unannotated.
+For 'anchorOne' and 'anchorTwo', a GRanges. 
+
+For 'interactionCounts', a numeric vector with counts for each interaction in the object.
+
+For 'description' and 'name',  a character vector with length 1. 
+
+For 'annotationFeatures', a character vector of features with
+which the object was previously annotated, or 'NA' if the object is unannotated.
+
+For 'seqinfo', a \linkS4class{Seqinfo} object is returned for the regions in \code{GIObject}.
 }
 \description{
 Use these functions to access data stored in each of the slots of a
