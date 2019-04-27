@@ -1,3 +1,7 @@
+###########################
+### annotation generics ###
+###########################
+
 #' @export
 #' @rdname resetAnnotations
 setGeneric("resetAnnotations", function(GIObject) standardGeneric("resetAnnotations"))
@@ -10,8 +14,9 @@ setGeneric("annotateRegions", function(GIObject, name, dat) standardGeneric("ann
 #' @rdname annotateInteractions
 setGeneric("annotateInteractions",function(GIObject, annotations) standardGeneric("annotateInteractions"))
 
-#' @export
-setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric("calculateDistances"))
+#######################
+### export generics ###
+#######################
 
 #' @export
 setGeneric("export.igraph",function(GIObject) standardGeneric("export.igraph"))
@@ -21,6 +26,10 @@ setGeneric("export.bed12",function(GIObject, fn=NULL, score="counts") standardGe
 
 #' @export
 setGeneric("export.chiasig", function(GIObject, fn=NULL, score="counts") standardGeneric("export.chiasig"))
+
+#######################
+### getter generics ###
+#######################
 
 #' @rdname getters
 #' @export
@@ -41,3 +50,48 @@ setGeneric("interactionCounts",function(GIObject) standardGeneric("interactionCo
 #' @rdname getters
 #' @export
 setGeneric("annotationFeatures",function(GIObject) standardGeneric("annotationFeatures"))
+
+#######################
+### helper generics ###
+#######################
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.pp",function(GIObject) standardGeneric("is.pp"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.pd",function(GIObject) standardGeneric("is.pd"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.pt",function(GIObject) standardGeneric("is.pt"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.dd",function(GIObject) standardGeneric("is.dd"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.dt",function(GIObject) standardGeneric("is.dt"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.tt",function(GIObject) standardGeneric("is.tt"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("isInteractionType",function(GIObject, x, y) standardGeneric("isInteractionType"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.trans",function(GIObject) standardGeneric("is.trans"))
+
+#' @rdname InteractionHelpers
+#' @export
+setGeneric("is.cis",function(GIObject) standardGeneric("is.cis"))
+
+#' @export
+setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric("calculateDistances"))
+
+
