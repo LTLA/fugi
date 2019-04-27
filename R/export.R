@@ -71,9 +71,6 @@ setMethod("export.bed12", "GenomicInteractions", function(GIObject, fn=NULL, sco
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)
 #' export.bedpe(hic_example_data, fn = tempfile(), score = "counts")
-setGeneric("export.bedpe", function(GIObject, fn=NULL, score="counts"){ standardGeneric("export.bedpe")} )
-#' @rdname export.bedpe
-#' @export
 setMethod("export.bedpe", "GenomicInteractions", function(GIObject, fn=NULL, score="counts"){
     score_vector = .getScore(GIObject, score)
     if (is.null(score_vector)) stop("Supplied score field not in element metadata.")
@@ -113,8 +110,6 @@ setMethod("export.bedpe", "GenomicInteractions", function(GIObject, fn=NULL, sco
 #'
 #' @export
 #' @docType methods
-#' @rdname export.chiasig
-#' @export
 #' @examples
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)

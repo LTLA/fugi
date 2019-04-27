@@ -17,11 +17,10 @@
 #'  Default: FALSE.
 #'
 #' @return A data frame with one line for each range in `features'
-#' @rdname summariseByFeatures
+#'
 #' @docType methods
 #' @import GenomicRanges
 #' @importFrom stats median
-#' @export
 #' @examples 
 #' data("hic_example_data")
 #' hic_example_data <- updateObject(hic_example_data)
@@ -209,10 +208,10 @@ setMethod("summariseByFeatures", "GenomicInteractions",
 #' @param feature.name.two The name of the second feature set of interest
 #'
 #' @return A data frame with one line for each range in `features'
-#' @rdname summariseByFeaturePairs
+#'
 #' @docType methods
 #' @import GenomicRanges
-#' @export
+#'
 #' @examples
 #' data("hic_example_data")
 #' hic_example_data <- updateObject(hic_example_data)

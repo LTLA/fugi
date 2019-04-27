@@ -19,88 +19,95 @@ setGeneric("annotateInteractions",function(GIObject, annotations) standardGeneri
 #######################
 
 #' @export
+#' @rdname export.igraph
 setGeneric("export.igraph",function(GIObject) standardGeneric("export.igraph"))
 
 #' @export
+#' @rdname export.bed12
 setGeneric("export.bed12",function(GIObject, fn=NULL, score="counts") standardGeneric("export.bed12"))
 
 #' @export
+#' @rdname export.chiasig
 setGeneric("export.chiasig", function(GIObject, fn=NULL, score="counts") standardGeneric("export.chiasig"))
+
+#' @export
+#' @rdname export.bedpe
+setGeneric("export.bedpe", function(GIObject, fn=NULL, score="counts"){ standardGeneric("export.bedpe")} )
 
 #######################
 ### getter generics ###
 #######################
 
-#' @rdname getters
 #' @export
+#' @rdname getters
 setGeneric("name", function(GIObject) standardGeneric("name"))
 
-#' @rdname getters
 #' @export
+#' @rdname getters
 setGeneric("anchorOne",function(GIObject) standardGeneric("anchorOne"))
 
-#' @rdname getters
 #' @export
+#' @rdname getters
 setGeneric("anchorTwo",function(GIObject) standardGeneric("anchorTwo"))
 
-#' @rdname getters
 #' @export
+#' @rdname getters
 setGeneric("interactionCounts",function(GIObject) standardGeneric("interactionCounts"))
 
-#' @rdname getters
 #' @export
+#' @rdname getters
 setGeneric("annotationFeatures",function(GIObject) standardGeneric("annotationFeatures"))
 
 #######################
 ### helper generics ###
 #######################
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.pp",function(GIObject) standardGeneric("is.pp"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.pd",function(GIObject) standardGeneric("is.pd"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.pt",function(GIObject) standardGeneric("is.pt"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.dd",function(GIObject) standardGeneric("is.dd"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.dt",function(GIObject) standardGeneric("is.dt"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.tt",function(GIObject) standardGeneric("is.tt"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("isInteractionType",function(GIObject, x, y) standardGeneric("isInteractionType"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.trans",function(GIObject) standardGeneric("is.trans"))
 
-#' @rdname InteractionHelpers
 #' @export
+#' @rdname InteractionHelpers
 setGeneric("is.cis",function(GIObject) standardGeneric("is.cis"))
 
 #######################
 ### setter generics ###
 #######################
 
-#' @rdname setters
 #' @export
+#' @rdname setters
 setGeneric("name<-",function(GIObject, value) standardGeneric("name<-"))
 
-#' @rdname setters
 #' @export
+#' @rdname setters
 setGeneric("interactionCounts<-",function(GIObject, value) standardGeneric("interactionCounts<-"))
 
 ###########################
@@ -108,6 +115,7 @@ setGeneric("interactionCounts<-",function(GIObject, value) standardGeneric("inte
 ###########################
 
 #' @export
+#' @rdname countsBetweenAnchors-methods
 setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBetweenAnchors"))
 
 ###########################
@@ -115,6 +123,7 @@ setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBe
 ###########################
 
 #' @export
+#' @rdname GenomicInteractions-subsetByFeatures-methods
 setGeneric("subsetByFeatures",function(GIObject, features, feature.class=NULL){standardGeneric ("subsetByFeatures")})
 
 ##############################
@@ -122,10 +131,12 @@ setGeneric("subsetByFeatures",function(GIObject, features, feature.class=NULL){s
 ##############################
 
 #' @export
+#' @rdname summariseByFeatures
 setGeneric("summariseByFeatures", function(GIObject, features, feature.name, distance.method="midpoint", annotate.self=FALSE)
     standardGeneric("summariseByFeatures"))
 
 #' @export
+#' @rdname summariseByFeaturePairs
 setGeneric("summariseByFeaturePairs",function(GIObject, features.one, feature.name.one, features.two, feature.name.two)
     standardGeneric ("summariseByFeaturePairs"))
 
@@ -134,6 +145,7 @@ setGeneric("summariseByFeaturePairs",function(GIObject, features.one, feature.na
 #############################
 
 #' @export
+#' @rdname calculateDistances
 setGeneric("calculateDistances", function(GIObject, method="midpoint", floor=TRUE) standardGeneric("calculateDistances"))
 
 
