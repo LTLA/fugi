@@ -15,9 +15,9 @@
 #'      IRanges(c(100, 200, 300, 50), width=5))
 #' interaction_counts = sample(1:10, 4)
 #' test <- GenomicInteractions(anchor.one, anchor.two, 
-#'      experiment_name="test", 
-#'      description="this is a test", 
+#'      metadata=list(experiment_name="test", description="this is a test"),
 #'      counts=interaction_counts)
+#' metadata(test)
 #'
 #' name(test) <- "Mouse test"
 #' name(test)
