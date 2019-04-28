@@ -13,7 +13,6 @@ Authors@R: c(person("Nathan", "Harmston", role="aut"),
     person("Aaron", "Lun", role="aut"))
 Depends: GenomicInteractions
 Imports:
-    IndexedRelations,
     BiocGenerics,
     S4Vectors,
     GenomicRanges,

@@ -29,10 +29,10 @@ GenomicInteractions or GenomicInteractions object.
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 chip <- runif(n = length(regions(hic_example_data)), max = 1000)
 annotateRegions(hic_example_data, "chip", chip)
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 }

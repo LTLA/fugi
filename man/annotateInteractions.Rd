@@ -37,11 +37,11 @@ in its associated metadata.
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 data(mm9_refseq_promoters)
 mm9_refseq_grl <- split(mm9_refseq_promoters, mm9_refseq_promoters$id)
 annotateInteractions(hic_example_data, list(promoter=mm9_refseq_grl))
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 }

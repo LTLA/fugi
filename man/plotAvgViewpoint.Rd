@@ -4,7 +4,7 @@
 \alias{plotAvgViewpoint}
 \title{Plot coverage around a set of virtual 4C viewpoints}
 \usage{
-plotAvgViewpoint(x, left_dist = 1e+05, right_dist = 1e+05,
+plotAvgViewpoint(x, left_dist = 100000, right_dist = 100000,
   ylab = "Average signal", xlab = "Relative position",
   fix = "center", ...)
 }

@@ -23,9 +23,9 @@ deleting all of the metadata columns associated with both anchors.
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 resetAnnotations(hic_example_data)
-mcols(regions(hic_example_data, as.list=TRUE)[[1]])
+mcols(regions(hic_example_data, type=1))
 
 }
