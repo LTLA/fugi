@@ -16,27 +16,22 @@
 #' @return a graph.data.frame representation of the \linkS4class{GenomicInteractions} object
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom S4Vectors mcols
-#' @importFrom IndexedRelations featureSets partners
+#' @importFrom GenomicInteractions anchors
 #'
 #' @export
 #' @docType methods
 #' @rdname export.igraph
 #' @export
 setMethod("export.igraph", "GenomicInteractions", function(GIObject){
-    regs <- featureSets(GIObject)
-    if (length(regs)==2) {
-        stop("expecting one set of regions only")
-    }
-    regs <- regs[[1]]
-
+    regs <- .get_single_regions(GIObject)
     nodes <- names(regs)
     if (is.null(nodes)) {
         nodes <- as.character(regs)
     }
     nodes <- data.frame(name = nodes, mcols(regs))
 
-    a1 <- partners(GIObject)[,1]
-    a2 <- partners(GIObject)[,2]
+    a1 <- anchors(GIObject, type=1, id=TRUE)
+    a2 <- anchors(GIObject, type=2, id=TRUE)
     edges <- data.frame(from = nodes$name[a1], to = nodes$name[a2])
     edges <- cbind(edges, mcols(GIObject))
 

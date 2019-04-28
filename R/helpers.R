@@ -28,7 +28,6 @@ setMethod("is.pp", "GenomicInteractions", function(GIObject) isInteractionType(G
 
 #' @rdname InteractionHelpers
 #' @export
-#' @importFrom IndexedRelations partners
 setMethod("is.pd", "GenomicInteractions", function(GIObject) isInteractionType(GIObject, "promoter", "distal"))
 
 #' @rdname InteractionHelpers
@@ -50,12 +49,11 @@ setMethod("is.tt", "GenomicInteractions", function(GIObject) .check_annotation(G
 #' @rdname InteractionHelpers
 #' @param x,y Names of annotated node classes
 #' @export
-#' @importFrom IndexedRelations partners
+#' @importFrom GenomicInteractions anchors
 setMethod("isInteractionType", "GenomicInteractions", function(GIObject, x, y) {
-    a1 <- partners(GIObject)[,1]
-    a2 <- partners(GIObject)[,2]
-
     anno <- annotationFeatures(GIObject)
+    a1 <- anchors(GIObject, type=1, id=TRUE)
+    a2 <- anchors(GIObject, type=2, id=TRUE)
     anno1 <- anno[a1]
     anno2 <- anno[a2]
 

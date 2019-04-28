@@ -75,13 +75,13 @@ removeDups <- function(GIObject){
 #' @param GIObject A \linkS4class{GenomicInteractions} object
 #' @return A logical vector denoting with TRUE if both anchors of an interaction
 #'  are on the same strand and FALSE otherwise.
-#' @importFrom IndexedRelations partners partnerFeatures
+#' @importFrom GenomicInteractions anchors regions
 #' @importFrom BiocGenerics strand
 sameStrand <- function(GIObject){
-    a1 <- partners(GIObject)[,1]
-    a2 <- partners(GIObject)[,2]
-    r1 <- partnerFeatures(GIObject, 1)
-    r2 <- partnerFeatures(GIObject, 2)
+    a1 <- anchors(GIObject, type=1, id=TRUE)
+    a2 <- anchors(GIObject, type=2, id=TRUE)
+    r1 <- regions(GIObject, type=1)
+    r2 <- regions(GIObject, type=2)
     strand(r1)[a1]==strand(r2)[a2]
 }
 

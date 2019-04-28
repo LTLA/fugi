@@ -21,6 +21,7 @@
 #'
 #' @rdname GenomicInteractions-subsetByFeatures-methods
 #' @export
+#' @importFrom IRanges overlapsAny
 setMethod("subsetByFeatures", c("GenomicInteractions", "GRanges", "missing"), function(GIObject, features, feature.class=NULL){
     i <- overlapsAny(GIObject, features)
     GIObject[i]
@@ -28,6 +29,7 @@ setMethod("subsetByFeatures", c("GenomicInteractions", "GRanges", "missing"), fu
 
 #' @rdname GenomicInteractions-subsetByFeatures-methods
 #' @export
+#' @importFrom IRanges overlapsAny
 setMethod("subsetByFeatures", c("GenomicInteractions", "GRangesList", "missing"), function(GIObject, features, feature.class=NULL){
   i <- overlapsAny(GIObject, features)
   GIObject[i]
@@ -35,6 +37,8 @@ setMethod("subsetByFeatures", c("GenomicInteractions", "GRangesList", "missing")
 
 #' @rdname GenomicInteractions-subsetByFeatures-methods
 #' @export
+#' @importFrom GenomicInteractions anchors regions
+#' @importFrom S4Vectors mcols
 setMethod("subsetByFeatures", c("GenomicInteractions", "character", "character"), 
           function(GIObject, features, feature.class){
     if(!.has_annotations(GIObject) || !feature.class %in% annotationFeatures(GIObject)) {
@@ -42,14 +46,18 @@ setMethod("subsetByFeatures", c("GenomicInteractions", "character", "character")
     }
 
     #get regions which are annotated with given feature IDs
-    regs <- regions(GIObject, as.list=TRUE)[[1]]
-    ids <- mcols(regs)[[paste(feature.class, "id", sep=".")]]
-    region_idx <- which(sapply(ids, function(x){any(features %in% x)}))
+    FUN <- function(GIObject, type) {
+        regs <- regions(GIObject, type=type)
+        ids <- mcols(regs)[[paste(feature.class, "id", sep=".")]]
+        which(sapply(ids, function(x) any(features %in% x)))
+    }
+    idx1 <- FUN(GIObject, 1)
+    idx2 <- FUN(GIObject, 2)
 
     #get object index for region idx
-    a1 <- partners(GIObject)[,1]
-    a2 <- partners(GIObject)[,2]
-    gi_idx <- (a1 %in% region_idx) | (a2 %in% region_idx)
+    a1 <- anchors(GIObject, type=1, id=TRUE)
+    a2 <- anchors(GIObject, type=2, id=TRUE)
+    gi_idx <- (a1 %in% idx1) | (a2 %in% idx2)
     
     GIObject[gi_idx]
 })

@@ -63,14 +63,13 @@ setReplaceMethod("interactionCounts", "GenomicInteractions", function(GIObject, 
 #' @rdname setters
 #' @inheritParams GenomeInfoDb::'seqinfo<-'
 #' @importFrom GenomeInfoDb seqinfo<-
+#' @importFrom GenomicInteractions regions regions<-
 setMethod("seqinfo<-", "GenomicInteractions", function(x, new2old = NULL, 
     pruning.mode = c("error", "coarse", "fine", "tidy"), value) 
 {
-    regs <- featureSets(x)
-    if (length(regs)==2L) {
-        stop("expecting one set of regions only")
-    }
+    regs <- regions(x, type=NULL)
     seqinfo(regs[[1]], new2old=new2old, pruning.mode=match.arg(pruning.mode)) <- value
-    featureSets(x) <- regs
+    seqinfo(regs[[2]], new2old=new2old, pruning.mode=match.arg(pruning.mode)) <- value
+    regions(x, type=NULL) <- regs
     x
 })

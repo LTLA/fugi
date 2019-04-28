@@ -181,6 +181,8 @@ setMethod("export.chiasig", "GenomicInteractions", function(GIObject, fn=NULL, s
 #' @importFrom IRanges PartitioningByWidth
 #' @importFrom S4Vectors elementNROWS mcols
 #' @importFrom BiocGenerics relist
+#' @importFrom GenomicInteractions anchors swapAnchors
+#' 
 #' @export
 #' @docType methods
 #' @examples
@@ -192,13 +194,9 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
         warning("Names will be dropped during BED12 export")
 
     x = swapAnchors(x, mode="order")
-    a1 <- partners(x)[,1]
-    a2 <- partners(x)[,2]
-    regs <- featureSets(x)
-    if (length(regs)==2L) {
-        stop("expecting one set of regions only")
-    }
-    regs <- regs[[1]]
+    a1 <- anchors(x, type=1, id=TRUE)
+    a2 <- anchors(x, type=2, id=TRUE)
+    regs <- .get_single_regions(x)
 
     is_trans = as.vector(seqnames(regs)[a1] != seqnames(regs)[a2])
     a1_cis = a1[!is_trans]

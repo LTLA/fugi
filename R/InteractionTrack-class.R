@@ -121,14 +121,13 @@ setMethod("subset", signature(x="InteractionTrack"), function(x, from, to, chrom
 #' plotTracks(list(interactions.track), chromosome="chr1", from=0, to=500)
 #' 
 #' @export
-#' @importFrom IndexedRelations featureSets
 InteractionTrack <- function(x, chromosome="", name=NULL, start=NULL, end=NULL){ 
   if(!(class(x)=="GenomicInteractions")){ stop("x must be a GenomicInteractions object")}
   if(is.null(name)){
     name = name(x)
   }
 
-  all.seqnames <- unlist(lapply(featureSets(x), seqlevels))
+  all.seqnames <- seqlevels(.get_single_regions(x))
   if(chromosome !="" & !(chromosome %in% all.seqnames)){
     stop(paste("chromosome:", chromosome, "not found in seqlevels of the supplied GenomicInteractions object", sep=" "))
   }

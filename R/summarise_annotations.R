@@ -221,7 +221,7 @@ setMethod("summariseByFeatures", "GenomicInteractions",
 #' annotateInteractions(hic_example_data, list(promoter = mm9_refseq_promoters, enhancer = thymus_enh))
 #'
 #' # can be slow so subset of features used for examples
-#' regs <- regions(hic_example_data, as.list=TRUE)[[1]]
+#' regs <- regions(hic_example_data, type=1)
 #' p <- unique(unlist(head(regs$promoter.id)))
 #' e <- unique(unlist(head(regs$enhancer.id)))
 #' p <- p[!is.na(p)]

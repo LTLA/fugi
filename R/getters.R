@@ -69,23 +69,25 @@ setMethod("interactionCounts", "GenomicInteractions", function(GIObject){
     mcols(GIObject)$counts
 })
 
+#' @importFrom GenomicInteractions regions
+.get_single_regions <- function(GIObject) {
+    regs <- regions(GIObject, type=NULL)
+    if (!identical(regs[[1]], regs[[2]])) {
+        stop("expecting the same set of regions for both anchors")
+    }
+    regs[[1]]
+}
+
 #' @rdname getters
 #' @export
-#' @importFrom IndexedRelations featureSets
 #' @importFrom S4Vectors mcols
 setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
-    regs <- featureSets(GIObject)
-    if (length(regs)==2L) {
-        stop("expecting one set of regions only")
-    }
-    regs <- regs[[1]]
-
+    regs <- .get_single_regions(GIObject)
     if ("node.class" %in% names(mcols(regs))) {
         annotation <- regs$node.class
     } else { 
         annotation <- NA_character_ 
     }
-
     annotation
 })
 
@@ -98,9 +100,6 @@ setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
 #' @rdname getters
 #' @importFrom GenomeInfoDb seqinfo
 setMethod("seqinfo", "GenomicInteractions", function(x) {
-    regs <- featureSets(x)
-    if (length(regs)==2L) {
-        stop("expecting one set of regions only")
-    }
-    seqinfo(regs[[1]])
+    regs <- .get_single_regions(x)
+    seqinfo(regs)
 })
