@@ -40,11 +40,11 @@ setMethod("is.dd", "GenomicInteractions", function(GIObject) isInteractionType(G
 
 #' @rdname InteractionHelpers
 #' @export
-setMethod("is.dt", "GenomicInteractions", function(GIObject) .check_annotation(GIObject, "distal", "terminator"))
+setMethod("is.dt", "GenomicInteractions", function(GIObject) isInteractionType(GIObject, "distal", "terminator"))
 
 #' @rdname InteractionHelpers
 #' @export
-setMethod("is.tt", "GenomicInteractions", function(GIObject) .check_annotation(GIObject, "terminator", "terminal"))
+setMethod("is.tt", "GenomicInteractions", function(GIObject) isInteractionType(GIObject, "terminator", "terminal"))
 
 #' @rdname InteractionHelpers
 #' @param x,y Names of annotated node classes

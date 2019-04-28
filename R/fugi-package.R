@@ -8,6 +8,7 @@
 #' @rdname fugi-package
 #' @docType package
 #' @import methods
+#' @import GenomicInteractions
 #' @examples
 #' library(fugi)
 NULL

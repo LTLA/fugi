@@ -21,6 +21,7 @@
 #' @importFrom Rsamtools scanBamFlag ScanBamParam scanBam bamFlagAsBitMatrix
 #' @importFrom IRanges IRanges
 #' @importFrom data.table data.table fread .N
+#' @importFrom S4Vectors DataFrame
 #'
 #' @examples
 #' k562.rep1 <- makeGenomicInteractionsFromFile(

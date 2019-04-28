@@ -98,6 +98,7 @@ setMethod("annotationFeatures", "GenomicInteractions", function(GIObject){
 
 #' @export
 #' @rdname getters
+#' @param x A \linkS4class{GenomicInteractions} object
 #' @importFrom GenomeInfoDb seqinfo
 setMethod("seqinfo", "GenomicInteractions", function(x) {
     regs <- .get_single_regions(x)

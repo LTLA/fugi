@@ -53,7 +53,7 @@ setMethod("resetAnnotations", "GenomicInteractions", function(GIObject){
 #'
 #' @export
 #' @rdname annotateRegions
-#' @importFrom S4Vectors mcols<- 
+#' @importFrom S4Vectors mcols<-  List
 #' @importClassesFrom GenomicInteractions GenomicInteractions 
 #' @importFrom GenomicInteractions regions regions<-
 setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), function(GIObject, name, dat) {
@@ -99,7 +99,7 @@ setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), fu
 #'
 #' @export
 #' @rdname annotateInteractions
-#' @importFrom S4Vectors queryHits subjectHits
+#' @importFrom S4Vectors queryHits subjectHits List
 #' @importFrom GenomicInteractions GenomicInteractions 
 #' @importFrom GenomicInteractions regions regions<-
 setMethod("annotateInteractions", c("GenomicInteractions", "list"), function(GIObject, annotations) {

@@ -27,9 +27,11 @@
 #'
 #' interactionCounts(test) <- c(2,3,8,5)
 #' interactionCounts(test)
-#'
+NULL
+
 #' @export
-#' @importFrom S4Vectors metadata
+#' @rdname setters
+#' @importFrom S4Vectors metadata<-
 setReplaceMethod("name", "GenomicInteractions", function(GIObject, value){
     metadata(GIObject)$experiment_name = value
     GIObject
@@ -38,7 +40,7 @@ setReplaceMethod("name", "GenomicInteractions", function(GIObject, value){
 #' @rdname setters
 #' @inheritParams Biobase::'description<-'
 #' @importMethodsFrom Biobase 'description<-'
-#' @importFrom S4Vectors metadata
+#' @importFrom S4Vectors metadata<-
 #' @export
 setReplaceMethod("description", "GenomicInteractions", function(object, value){
     metadata(object)$description = value
