@@ -1,4 +1,4 @@
-gi <- new("GenomicInteractions",
+gi <- GenomicInteractions(
           metadata = list(experiment_name="test", description = "this is a test"),
           anchor1 = as.integer(c(1, 7, 8, 4, 5)),
           anchor2 = as.integer(c(6, 2, 10, 9, 3)),
@@ -7,10 +7,11 @@ gi <- new("GenomicInteractions",
                                              width = c(10,9,6,7,6,10,9,8,7,8)),
                             strand = S4Vectors::Rle(c("+", "-", "+", "-"), c(2,4,1,3)),
                             seqinfo = Seqinfo(seqnames = paste("chr", 1:2, sep=""))),
-          elementMetadata = DataFrame(counts = 1:5))
+          counts = 1:5)
 
 drop_strand <- function(gi){
-  strand(gi@regions) <- "*"
+  strand(regions(gi, type=1)) <- "*"
+  strand(regions(gi, type=2)) <- "*"
   return(gi)
   }
 
@@ -50,16 +51,14 @@ test_that("bedpe export/import is consistent", {
 
 
 test_that("homer import is consistent with previous behaviour", {
-  fn <- system.file("extdata", "Seitan2013_WT_100kb_interactions.txt",
-                    package="GenomicInteractions")
+  fn <- system.file("extdata", "Seitan2013_WT_100kb_interactions.txt", package="fugi")
 
   expect_equal_to_reference(makeGenomicInteractionsFromFile(fn, type = "homer"),
                             file = "importhomer.rds")
 })
 
 test_that("chiapet tool import is consistent with previous behaviour", {
-  fn <- system.file("extdata/k562.rep1.cluster.pet3+.txt",
-                    package="GenomicInteractions")
+  fn <- system.file("extdata/k562.rep1.cluster.pet3+.txt", package="fugi")
 
   expect_equal_to_reference(makeGenomicInteractionsFromFile(fn, type = "chiapet.tool"),
                             file = "importchiapettool.rds")

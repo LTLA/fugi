@@ -1,5 +1,5 @@
 make_gi <- function() {
-  new("GenomicInteractions",
+  GenomicInteractions(
       metadata = list(experiment_name="test", description = "this is a test"),
       anchor1 = as.integer(c(1,  7,  8,  9,  2,  3, 13, 14, 15, 16)),
       anchor2 = as.integer(c(4, 10, 11, 12,  5,  6, 17, 18, 19, 20)),
@@ -10,7 +10,7 @@ make_gi <- function() {
                                                    1L, 4L, 3L, 2L, 1L)),
                         strand = S4Vectors::Rle(strand(c("-", "+", "-")), c(6, 6, 8)),
                         seqinfo = Seqinfo(seqnames = paste("chr", 1:3, sep=""))),
-      elementMetadata = DataFrame(counts = 10:1))
+      counts = 10:1)
 }
 
 test_that("Anchors are returned correctly", {
@@ -50,7 +50,7 @@ test_that("Annotation features are returned correctly", {
   
   expect_equal(annotationFeatures(gi), NA_character_)
   
-  gi <- new("GenomicInteractions",
+  gi <- GenomicInteractions(
       metadata = list(experiment_name="test", description = "this is a test"),
       anchor1 = as.integer(c(1,  7,  8,  9,  2,  3, 13, 14, 15, 16)),
       anchor2 = as.integer(c(4, 10, 11, 12,  5,  6, 17, 18, 19, 20)),
@@ -62,7 +62,7 @@ test_that("Annotation features are returned correctly", {
                         strand = S4Vectors::Rle(strand(c("-", "+", "-")), c(6, 6, 8)),
                         seqinfo = Seqinfo(seqnames = paste("chr", 1:3, sep="")),
                         node.class = rep(c("distal", "distal", "promoter", "distal", "promoter"), 4)),
-      elementMetadata = DataFrame(counts = 10:1))
+      counts = 10:1)
   expect <- "promoter|distal"
   expect_match(annotationFeatures(gi), expect)
 })

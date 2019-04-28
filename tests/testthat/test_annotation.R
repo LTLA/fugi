@@ -1,4 +1,4 @@
-gi <- new("GenomicInteractions",
+gi <- GenomicInteractions(
           metadata = list(experiment_name="test", description = "this is a test"),
           anchor1 = as.integer(c(1, 7, 8, 4, 5)),
           anchor2 = as.integer(c(6, 2, 10, 9, 3)),
@@ -7,7 +7,7 @@ gi <- new("GenomicInteractions",
                                              width = c(10,9,6,7,6,10,9,8,7,8)),
                             strand = S4Vectors::Rle(c("+", "-", "+", "-"), c(2,4,1,3)),
                             seqinfo = Seqinfo(seqnames = paste("chr", 1:2, sep=""))),
-          elementMetadata = DataFrame(counts = 1:5))
+          counts = 1:5)
 
 promoters <- GRanges(seqnames = S4Vectors::Rle(factor(c("chr1", "chr2")), c(2, 1)),
                      ranges = IRanges(c(9, 14, 11), width = 4:6),
@@ -75,18 +75,3 @@ test_that("distance calculations work as expected", {
                c(16, NA, 10, NA, 8))
   expect_error(calculateDistances(gi, method = "my_method"))
 })
-
-one.df <- as.data.frame(anchorOne(gi))
-two.df <- as.data.frame(anchorTwo(gi))
-
-test_that("distance calculations on dataframes work as expected", {
-  expect_equal(GenomicInteractions:::.calculateDistances.df(one.df, two.df),
-               calculateDistances(gi))
-  expect_equal(GenomicInteractions:::.calculateDistances.df(one.df, two.df, method = "midpoint"),
-               calculateDistances(gi, method = "midpoint"))
-  expect_equal(GenomicInteractions:::.calculateDistances.df(one.df, two.df, method = "inner"),
-               calculateDistances(gi, method = "inner"))
-  expect_equal(GenomicInteractions:::.calculateDistances.df(one.df, two.df, method = "outer"),
-               calculateDistances(gi, method = "outer"))
-  })
-
