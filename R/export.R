@@ -196,7 +196,12 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
     x = swapAnchors(x, mode="order")
     a1 <- anchors(x, type=1, id=TRUE)
     a2 <- anchors(x, type=2, id=TRUE)
-    regs <- .get_single_regions(x)
+
+    # This is actually safe regardless of 'regions(x)'.
+    # as swapAnchors standardizes both regions() anyway.
+    # For the time being, at least; swapAnchors is not 
+    # guaranteed to behave like this, so it might change.
+    regs <- .get_single_regions(x) 
 
     is_trans = as.vector(seqnames(regs)[a1] != seqnames(regs)[a2])
     a1_cis = a1[!is_trans]
@@ -211,7 +216,7 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
     }
 
     names = paste0(seqnames(regs)[a1], ":", start(regs)[a1] - 1 , "..", end(regs)[a1], "-",
-        seqnames(regs)[a2], ":", start(regs)[a2] - 1, "..", end(regs)[a2], ",", score)
+        seqnames(regs)[a2], ":", start(regs)[a2] - 1, "..", end(regs)[a2], ",", scores)
 
     cis_blocks = relist(IRanges(
             start=c(rbind(rep(1L, length(a1_cis)), start(regs)[a2_cis] - start(regs)[a1_cis] + 1L)),
