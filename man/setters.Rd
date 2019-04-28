@@ -5,6 +5,7 @@
 \alias{name<-}
 \alias{interactionCounts<-}
 \alias{setters}
+\alias{name<-,GenomicInteractions-method}
 \alias{description<-,GenomicInteractions,ANY-method}
 \alias{interactionCounts<-,GenomicInteractions-method}
 \alias{seqinfo<-,GenomicInteractions-method}
@@ -136,5 +137,4 @@ description(test)
 
 interactionCounts(test) <- c(2,3,8,5)
 interactionCounts(test)
-
 }

@@ -45,6 +45,8 @@ annotationFeatures(GIObject)
 \item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
 \item{object}{Object, possibly derived from class \code{\link{eSet-class}}.}
+
+\item{x}{A \linkS4class{GenomicInteractions} object}
 }
 \value{
 For 'anchorOne' and 'anchorTwo', a GRanges. 
