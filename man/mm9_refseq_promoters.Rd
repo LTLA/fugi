@@ -4,17 +4,15 @@
 \name{mm9_refseq_promoters}
 \alias{mm9_refseq_promoters}
 \title{Mouse Refseq promoters from chr 14-15}
-\format{A GRanges object with length 2441.}
+\format{A \linkS4class{GRanges} object with length 2441.}
 \usage{
 data(mm9_refseq_promoters)
 }
 \value{
-A GRanges object.
+A \linkS4class{GRanges} object.
 }
 \description{
-This dataset contains a subset of the promoters from the Refseq annotation
-for mouse genome build mm9. See the HiC analysis vignette 
-(\code{vignettes(GenomicInteractions)}) for more information on how this 
-dataset was created.
+This dataset contains a subset of the promoters from the Refseq annotation for mouse genome build mm9. 
+See the HiC analysis vignette (\code{vignette(package="fugi")}) for more information on how this dataset was created.
 }
 \keyword{datasets}

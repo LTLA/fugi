@@ -4,30 +4,27 @@
 \name{hic_example_data}
 \alias{hic_example_data}
 \title{Example HiC dataset}
-\format{A GenomicInteractions object with length 8171.}
+\format{A \linkS4class{GenomicInteractions} object with length 8171.}
 \usage{
 data(hic_example_data)
 }
 \value{
-GenomicInteractions object
+A \linkS4class{GenomicInteractions} object.
 }
 \description{
-This dataset contains HiC data from Seitan et al. 2013. The data was 
-analysed using HOMER (Heinz et al. 2010) at a resolution of 100kb to 
-find significant interactions. This example dataset has been filtered
-to retain only interactions on chromosomes 14 and 15 with a FDR < 0.1.
+This dataset contains HiC data from Seitan et al. (2013). 
+The data was analysed using HOMER (Heinz et al. 2010) at a resolution of 100kb to find significant interactions. 
+This example dataset has been filtered to retain only interactions on chromosomes 14 and 15 with a FDR < 0.1.
 The data has also been annotated for overlaps with Refseq promoters.
-See the HiC analysis vignette (\code{vignettes(GenomicInteractions)}) for 
-more information on how this dataset was created.
+See the HiC analysis vignette (\code{vignette(package="fugi")}) for more information on how this dataset was created.
 }
 \references{
-Seitan, V. C. et al. Cohesin-based chromatin interactions enable 
-regulated gene expression within pre-existing architectural compartments. 
-Genome Res. 23, 2066-77 (2013).
+Seitan VC et al. (2013).
+Cohesin-based chromatin interactions enable regulated gene expression within pre-existing architectural compartments. 
+\emph{Genome Res.} 23, 2066-77.
 
-Heinz S, Benner C, Spann N, Bertolino E et al. Simple Combinations of 
-Lineage-Determining Transcription Factors Prime cis-Regulatory Elements 
-Required for Macrophage and B Cell Identities. Mol Cell 2010 
-May 28;38(4):576-589.
+Heinz S, Benner C, Spann N, Bertolino E et al. (2010).
+Simple combinations of lineage-determining transcription factors prime cis-regulatory elements required for macrophage and B cell identities. 
+\emph{Mol. Cell} 38(4), 576-589.
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 \name{export.bedpe}
 \alias{export.bedpe}
 \alias{export.bedpe,GenomicInteractions-method}
-\title{Export interactions in BED Paired-End format.}
+\title{Export interactions in BEDPE format.}
 \usage{
 export.bedpe(GIObject, fn = NULL, score = "counts")
 
@@ -14,20 +14,23 @@ export.bedpe(GIObject, fn = NULL, score = "counts")
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{fn}{A filename to write the interactions data to}
+\item{fn}{String containing a path to a file to write the interaction data to.}
 
-\item{score}{Which metadata column to use as score}
+\item{score}{String or integer scalar specifying the metadata column to export as the \code{score} field.}
 }
 \value{
-invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
+
+Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
 }
 \description{
-#' Exports a \linkS4class{GenomicInteractions} object to BED-PE format, and writes to a specified file. If filename is not specified,
-then a data.frame containing the information is returned. The value of the score parameter defines which field is used
-to populate the score field.
+Exports a \linkS4class{GenomicInteractions} object to file in the BEDPE (paired-end) format,.
 }
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
 export.bedpe(hic_example_data, fn = tempfile(), score = "counts")
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }

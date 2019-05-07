@@ -4,19 +4,21 @@
 \name{thymus_enh}
 \alias{thymus_enh}
 \title{Putative enhancers from mouse thymus data}
-\format{A GRanges object}
+\format{A \linkS4class{GRanges} object.}
 \usage{
 data("thymus_enhancers")
 }
 \value{
-A GRanges object
+A \linkS4class{GRanges} object.
 }
 \description{
-This dataset contains a set of mouse thymus enhancers derived from ChIP-seq data
-from mouse thymus, as described in Shen et al. 2012. See the HiC analysis vignette 
-for more details. (\code{vignettes(GenomicInteractions)}).
+This dataset contains a set of mouse thymus enhancers derived from ChIP-seq data from mouse thymus, 
+as described in Shen et al. (2012). 
+See the HiC analysis vignette (\code{vignette(package="fugi")}) for more details.
 }
 \references{
-Shen, Y et al. A map of cis-regulatory sequences in the mouse genome. Nature (2012).
+Shen Y et al. (2012).
+A map of cis-regulatory sequences in the mouse genome. 
+\emph{Nature} 488, 116-120.
 }
 \keyword{datasets}

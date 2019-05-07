@@ -21,7 +21,7 @@
 \alias{isInteractionType,GenomicInteractions-method}
 \alias{is.trans,GenomicInteractions-method}
 \alias{is.cis,GenomicInteractions-method}
-\title{Interaction Type Helpers}
+\title{Interaction type helper functions}
 \usage{
 is.pp(GIObject)
 
@@ -60,24 +60,23 @@ is.cis(GIObject)
 \S4method{is.cis}{GenomicInteractions}(GIObject)
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
 \item{x, y}{Names of annotated node classes}
 }
 \value{
-A logical vector
+A logical vector indicating whether each entry of \code{GIObject} is of the specified type.
 }
 \description{
 Functions to classify interactions within \linkS4class{GenomicInteractions} objects.
-\itemize{
-    \item "isInteractionType" takes two character arguments which are
-          annotated node classes and returns interactions between them.
-    \item "is.pp", "is.pd" etc. are bindings for common annotations:
-    \describe{ \item{p}{promoter}
-               \item{d}{distal}
-               \item{t}{terminator} }
-    \item "is.trans" & "is.cis" select trans-chromosomal and
-          intra-chromosomal interactions, respectively }
+}
+\details{
+\code{isInteractionType} identifies all interactions that occur between the annotated node classes \code{x} and \code{y}.
+
+\code{is.trans} and \code{is.cis} select trans-chromosomal and intra-chromosomal interactions, respectively.
+
+The other functions are convenience wrappers for identifying interactions between regions of common annotations,
+namely promoter \code{p}, distal \code{d} or terminator \code{t} regions.
 }
 \examples{
 data(hic_example_data)
@@ -85,4 +84,7 @@ hic_example_data <- updateObject(hic_example_data)
 table(is.cis(hic_example_data))
 sum(interactionCounts(hic_example_data))
 
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }

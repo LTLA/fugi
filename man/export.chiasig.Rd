@@ -14,21 +14,29 @@ export.chiasig(GIObject, fn = NULL, score = "counts")
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{fn}{A filename to write the interactions data to}
+\item{fn}{String containing a path to a file to write the interaction data to.}
 
-\item{score}{Which metadata column to use as the score: counts or normalised}
+\item{score}{String or integer scalar specifying the metadata column to export as the \code{score} field.}
 }
 \value{
-invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
+
+Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
 }
 \description{
-Exports a \linkS4class{GenomicInteractions} object to BEDPE like format, (anchor specifications and a column for reads connecting them)
-and writes to a specified file. If filename is not specified,
-then a data.frame containing the information is returned. The value of the score parameter defines which field is used
-to populate the score field.
+Exports a \linkS4class{GenomicInteractions} object to file in a BEDPE-like format for use with ChiaSig.
 }
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
 export.chiasig(hic_example_data, fn = tempfile(), score = "counts")
+
+}
+\references{
+Paulsen et al. (2014).
+A statistical model of ChIA-PET data for accurate detection of chromatin 3D interactions.
+\emph{Nucleic Acids Res.} 42(18), e143.
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }

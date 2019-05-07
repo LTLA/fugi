@@ -4,7 +4,7 @@
 \name{export.bed12}
 \alias{export.bed12}
 \alias{export.bed12,GenomicInteractions-method}
-\title{Export interactions in BED12 format.}
+\title{Export interactions in BED12 format}
 \usage{
 export.bed12(GIObject, fn = NULL, score = "counts")
 
@@ -14,26 +14,29 @@ export.bed12(GIObject, fn = NULL, score = "counts")
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{fn}{A filename to write the object to}
+\item{fn}{String containing a filename to write the object to.}
 
-\item{score}{Which metadata column to export as score
-
-Exports a \linkS4class{GenomicInteractions} object to BED12 format, and writes to a specified file. If filename is not specified,
-then a data.frame containing the information is returned.
-
-Bed12 files provide a method for visualising interactions, it is not a good format for storing all of the data associated
-with an interaction dataset, particularly for trans-chromosomal interactions, which can only be stored in the bed12 names
-field.}
+\item{score}{String or integer scalar specifying the metadata column to export as the \code{score} field.}
 }
 \value{
-invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
+
+Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
 }
 \description{
-Export interactions in BED12 format.
+Exports a \linkS4class{GenomicInteractions} object to file in BED12 format.
+}
+\details{
+BED12 files provide a method for visualising interactions.
+However, it is not a good format for storing all of the data associated with an interaction dataset.
+This is particularly true for trans-chromosomal interactions, which can only be stored in the BED12 \code{names} field.
 }
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
 export.bed12(hic_example_data, fn = tempfile(), score = "counts")
 
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }

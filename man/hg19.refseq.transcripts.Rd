@@ -4,17 +4,15 @@
 \name{hg19.refseq.transcripts}
 \alias{hg19.refseq.transcripts}
 \title{Human Refseq transcripts from chr 17-18}
-\format{A GRanges object with length 2441.}
+\format{A \linkS4class{GRanges} object with length 2441.}
 \usage{
 data(hg19.refseq.transcripts)
 }
 \value{
-A GRanges object.
+A \linkS4class{GRanges} object.
 }
 \description{
-This dataset contains a subset of the transcripts from the Refseq annotation
-for mouse genome build hg19 See the ChIA-PET analysis vignette 
-(\code{vignettes(GenomicInteractions)}) for more information on how this 
-dataset was created.
+This dataset contains a subset of the transcripts from the Refseq annotation for human genome build hg19.
+See the ChIA-PET analysis vignette (\code{vignette(package="fugi")}) for more information on how this dataset was created.
 }
 \keyword{datasets}

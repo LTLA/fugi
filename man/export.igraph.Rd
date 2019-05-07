@@ -4,7 +4,7 @@
 \name{export.igraph}
 \alias{export.igraph}
 \alias{export.igraph,GenomicInteractions-method}
-\title{Export interactions to an igraph object.}
+\title{Export interactions to an igraph object}
 \usage{
 export.igraph(GIObject)
 
@@ -14,19 +14,22 @@ export.igraph(GIObject)
 \item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 }
 \value{
-a graph.data.frame representation of the \linkS4class{GenomicInteractions} object
+A graph representation of the \linkS4class{GenomicInteractions} object.
 }
 \description{
-Exports a \linkS4class{GenomicInteractions} object to graph.data.frame for use by \pkg{igraph} package. 
-This uses unique anchors
-as nodes and generates edges between them. For the resulting graph to be easily interpretable, anchors
-should be non-overlapping. This should already be the case for HiC data (either binned or restriction
-fragments), however ChIA-PET data can contain overlapping anchors, which may need to be reduced to
-non-overlapping regions before graph export.
+Exports a \linkS4class{GenomicInteractions} object to graph object for use by \pkg{igraph} package. 
+This uses unique anchors as nodes and generates edges between them. 
+
+For the resulting graph to be easily interpretable, anchors should be non-overlapping. 
+This should already be the case for HiC data using either binned genomic regions or restriction fragments.
+However, ChIA-PET data can contain overlapping anchors, which may need to be reduced to non-overlapping regions before graph export.
 }
 \examples{
 data(hic_example_data)
 hic_example_data <- updateObject(hic_example_data)
 ig <- export.igraph(hic_example_data)
 
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }

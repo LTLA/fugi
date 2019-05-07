@@ -2,36 +2,41 @@
 % Please edit documentation in R/import.R
 \name{makeGenomicInteractionsFromFile}
 \alias{makeGenomicInteractionsFromFile}
-\title{Function to create GenomicInteraction objects from a file}
+\title{Create GenomicInteraction objects from a file}
 \usage{
-makeGenomicInteractionsFromFile(fn, type, experiment_name = "",
+makeGenomicInteractionsFromFile(fn, type = c("chiapet.tool", "bed12",
+  "bedpe", "hiclib", "homer", "bam", "two.bams"), experiment_name = "",
   description = "", chr_names = NULL)
 }
 \arguments{
-\item{fn}{Filename or, if type="hiclib", folder}
+\item{fn}{String containing a path to the file (or for \code{type="hiclib"}, directory) containing the interaction data.}
 
-\item{type}{One of "chiapet.tool", "bed12", "bedpe", "hiclib", "homer", "bam", "two.bams".}
+\item{type}{String specifying the format of \code{fn}.}
 
-\item{experiment_name}{Experiment name.}
+\item{experiment_name}{String containing the experiment name.}
 
-\item{description}{Description of experiment.}
+\item{description}{String describing the experiment.}
 
-\item{chr_names}{a vector of chromosome names in order, required for re-naming chromosomes for hiclib import}
+\item{chr_names}{Character vector of chromosome names in order, required for re-naming chromosomes with \code{type="hiclib"}.}
 }
 \value{
-a GenomicInteractions object
+A \linkS4class{GenomicInteractions} object containing information extracted from \code{fn}.
 }
 \description{
-Function to create GenomicInteraction objects from a variety of files. The resulting objects contain information
-on which genomic regions are interacting with each other, and the number of counts supporting each interaction.
-It is also possible to store information on associated p-values and false-discovery rates (FDR).
-It is possible to create GenomicInteractions objects for various datasets including Hi-C and ChIA-PET. It is possible
-to read interactions from a variety of files including BAM files, bed files (BED12 and BEDPE) and from the output
-from standard processing pipelines, such as HOMER and ChIA-PET tool. GenomicInteractions objects can also be created
-using calls of the form \code{new("GenomicInteractions", ...)}. For hiclib, it expects the directory in which the files
-extracted using h5dictToTxt.py from the hdf5 file are located, where as for all of the other file types it expects the full
-filename. Note that recent versions of hiclib (2015-) cannot export the required data and so this function will only work with
-older files.
+Create \linkS4class{GenomicInteraction} objects from a variety of file formats. 
+The resulting objects contain information on which genomic regions are interacting with each other, 
+and the number of counts (usually for read pairs) supporting each interaction.
+}
+\details{
+This function reads interaction data from a variety of file formats including:
+\itemize{
+\item BAM files (single or double)
+\item BED variants such as BED12 and BEDPE
+\item Output of standard processing pipelines such as HOMER and ChIA-PET tool
+}
+
+For \code{type="hiclib"}, the function expects that \code{fn} contains a path to the directory in which the files were extracted using \code{h5dictToTxt.py} from the hdf5 file.
+Note that recent versions of hiclib (2015-) cannot export the required data and so this function will only work with older files.
 }
 \examples{
 k562.rep1 <- makeGenomicInteractionsFromFile(
@@ -40,4 +45,16 @@ k562.rep1 <- makeGenomicInteractionsFromFile(
 
 k562.rep1
 
+}
+\references{
+Heinz S, Benner C, Spann N, Bertolino E et al. (2010).
+Simple combinations of lineage-determining transcription factors prime cis-regulatory elements required for macrophage and B cell identities. 
+\emph{Mol. Cell} 38(4), 576-589.
+
+Li G et al. (2010).
+ChIA-PET tool for comprehensive chromatin interaction analysis with paired-end tag sequencing.
+\emph{Genome Biol.} 11, R22,
+}
+\author{
+Malcolm Perry, Elizabeth Ing-Simmons
 }
