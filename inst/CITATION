@@ -1,0 +1,16 @@
+bibentry(
+    bibtype = "article",
+    author = c(
+        person("Nathan", "Harmston"),
+        person("Elizabeth", "Ing-Simmons"),
+        person("Malcolm", "Perry"),
+        person("Anja", "Bare\u0161i\u0107"),
+        person("Boris", "Lenhard")
+    ),
+    title="GenomicInteractions: An R/Bioconductor package for manipulating and investigating chromatin interaction data",
+    journal="BMC Genomics",
+    year="2015",
+    volume="16",
+    pages="963",
+    doi="10.1186/s12864-015-2140-x"
+)
