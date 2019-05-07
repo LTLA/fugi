@@ -1,17 +1,21 @@
-#' Interaction Type Helpers
+#' @title
+#' Interaction type helper functions
 #'
+#' @description
 #' Functions to classify interactions within \linkS4class{GenomicInteractions} objects.
-#' \itemize{
-#'     \item "isInteractionType" takes two character arguments which are
-#'           annotated node classes and returns interactions between them.
-#'     \item "is.pp", "is.pd" etc. are bindings for common annotations:
-#'     \describe{ \item{p}{promoter}
-#'                \item{d}{distal}
-#'                \item{t}{terminator} }
-#'     \item "is.trans" & "is.cis" select trans-chromosomal and
-#'           intra-chromosomal interactions, respectively }
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @return A logical vector
+#'
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' 
+#' @details
+#' \code{isInteractionType} identifies all interactions that occur between the annotated node classes \code{x} and \code{y}.
+#'
+#' \code{is.trans} and \code{is.cis} select trans-chromosomal and intra-chromosomal interactions, respectively.
+#'
+#' The other functions are convenience wrappers for identifying interactions between regions of common annotations,
+#' namely promoter \code{p}, distal \code{d} or terminator \code{t} regions.
+#'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
+#' @return A logical vector indicating whether each entry of \code{GIObject} is of the specified type.
 #' @examples 
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)

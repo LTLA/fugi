@@ -1,23 +1,28 @@
-#' Export interactions in BED12 format.
+#' @title
+#' Export interactions in BED12 format
 #'
-#' @param GIObject  A \linkS4class{GenomicInteractions} object.
-#' @param fn        A filename to write the object to
-#' @param score     Which metadata column to export as score
+#' @description
+#' Exports a \linkS4class{GenomicInteractions} object to file in BED12 format.
+#' 
+#' @details
+#' BED12 files provide a method for visualising interactions.
+#' However, it is not a good format for storing all of the data associated with an interaction dataset.
+#' This is particularly true for trans-chromosomal interactions, which can only be stored in the BED12 \code{names} field.
 #'
-#' Exports a \linkS4class{GenomicInteractions} object to BED12 format, and writes to a specified file. If filename is not specified,
-#' then a data.frame containing the information is returned.
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param fn String containing a filename to write the object to.
+#' @param score String or integer scalar specifying the metadata column to export as the \code{score} field.
 #'
-#' Bed12 files provide a method for visualising interactions, it is not a good format for storing all of the data associated
-#' with an interaction dataset, particularly for trans-chromosomal interactions, which can only be stored in the bed12 names
-#' field.
+#' @return If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
 #'
-#' @return invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+#' Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
 #' @export
 #' @examples
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)
 #' export.bed12(hic_example_data, fn = tempfile(), score = "counts")
 #'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
 #' @docType methods
 #' @rdname export.bed12
 #' @export
@@ -28,7 +33,7 @@ setMethod("export.bed12", "GenomicInteractions", function(GIObject, fn=NULL, sco
     bed = asBED(GIObject, score)
     if (!is.null(fn)) {
         export(bed, fn, format="bed")
-        return(invisible(1))
+        return(invisible(NULL))
     } else {
         blocks = bed$blocks
         bed$blocks = NULL
@@ -51,18 +56,21 @@ setMethod("export.bed12", "GenomicInteractions", function(GIObject, fn=NULL, sco
     }
 })
 
-#' Export interactions in BED Paired-End format.
+#' @title
+#' Export interactions in BEDPE format.
 #'
-#' #' Exports a \linkS4class{GenomicInteractions} object to BED-PE format, and writes to a specified file. If filename is not specified,
-#' then a data.frame containing the information is returned. The value of the score parameter defines which field is used
-#' to populate the score field.
-#'
+#' @description
+#' Exports a \linkS4class{GenomicInteractions} object to file in the BEDPE (paired-end) format,.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object.
-#' @param fn	   A filename to write the interactions data to
-#' @param score    Which metadata column to use as score
-#' @return invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+#' @param fn String containing a path to a file to write the interaction data to.
+#' @param score String or integer scalar specifying the metadata column to export as the \code{score} field.
 #'
+#' @return If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
+#'
+#' Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
+#'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
 #' @export
 #' @docType methods
 #' @rdname export.bedpe
@@ -94,19 +102,19 @@ setMethod("export.bedpe", "GenomicInteractions", function(GIObject, fn=NULL, sco
     return(invisible(1))
 })
 
-
+#' @title
 #' Export interactions in a BEDPE-like format for use with ChiaSig
 #'
-#' Exports a \linkS4class{GenomicInteractions} object to BEDPE like format, (anchor specifications and a column for reads connecting them)
-#' and writes to a specified file. If filename is not specified,
-#' then a data.frame containing the information is returned. The value of the score parameter defines which field is used
-#' to populate the score field.
-#'
+#' @description
+#' Exports a \linkS4class{GenomicInteractions} object to file in a BEDPE-like format for use with ChiaSig.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object.
-#' @param fn     A filename to write the interactions data to
-#' @param score    Which metadata column to use as the score: counts or normalised
-#' @return invisible(1) if outputting to file or a data.frame containing all of the corresponding information
+#' @param fn String containing a path to a file to write the interaction data to.
+#' @param score String or integer scalar specifying the metadata column to export as the \code{score} field.
+#'
+#' @return If \code{fn} is supplied, \code{NULL} is invisibly returned and a file is created at \code{fn}.
+#'
+#' Otherwise, a data.frame is returned containing all of the corresponding information from \code{GIObject}.
 #'
 #' @export
 #' @docType methods
@@ -114,8 +122,14 @@ setMethod("export.bedpe", "GenomicInteractions", function(GIObject, fn=NULL, sco
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)
 #' export.chiasig(hic_example_data, fn = tempfile(), score = "counts")
+#'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
 #' @rdname export.chiasig
 #' @export
+#' @references
+#' Paulsen et al. (2014).
+#' A statistical model of ChIA-PET data for accurate detection of chromatin 3D interactions.
+#' \emph{Nucleic Acids Res.} 42(18), e143.
 setMethod("export.chiasig", "GenomicInteractions", function(GIObject, fn=NULL, score="counts"){
     score_vec = .getScore(GIObject, score)
     if (is.null(score_vec)) stop("Supplied score field not in element metadata.")
@@ -128,54 +142,50 @@ setMethod("export.chiasig", "GenomicInteractions", function(GIObject, fn=NULL, s
 
     if (!is.null(fn)){
         write.table(output, fn, sep="\t", col.names=FALSE, quote=FALSE, row.names=FALSE )
-        return(invisible(1))
+        return(invisible(NULL))
     } else{
         return(output)
     }
 })
 
-.getScore = function(x, score) {
-    if (score=="counts")
-        ans = interactionCounts(x)
-    else
-        ans = mcols(x)[[score]]
-    if (is.null(ans))
-        ans = rep(0, length(x))
+#' @importFrom S4Vectors mcols
+.getScore <- function(x, score) {
+    if (score=="counts") {
+        ans <- interactionCounts(x)
+    } else {
+        ans <- mcols(x)[[score]]
+    }
+    if (is.null(ans)) {
+        ans <- numeric(length(x))
+    }
     ans
 }
 
-.getNames = function(x) {
-    if ("name" %in% colnames(mcols(x)))
-        names = mcols(x)[["name"]]
-    else
-        names = paste0("interaction_", 1:length(x))
+#' @importFrom S4Vectors mcols
+.getNames <- function(x) {
+    if ("name" %in% colnames(mcols(x))) {
+        names <- mcols(x)[["name"]]
+    } else {
+        names <- sprintf("interaction_%i", seq_along(x))
+    }
     names
 }
 
-#' Coerce to BED structure
+#' @title Coerce to BED structure
 #'
-#' Coerce the structure of an object to one following BED-like
-#' conventions, i.e., with columns for blocks and thick regions.
+#' @description
+#' Coerce the structure of a \linkS4class{GenomicInteractions} into a \linkS4class{GRanges} following BED-like conventions, 
+#' i.e., with columns for blocks and thick regions.
 #'
-#' @param x Generally, a tabular object to structure as BED
-#' @param keep.mcols logical whether to keep non-BED12 columns in final
-#'                   output (may cause problems with some parsers).
-#' @param score character, which field to export as "score" in BED12.
-#'              Defaults to "auto" which will choose score, then counts,
-#'              if present, or fill column with zeros.
+#' @param x A \linkS4class{GenomicInteractions} object.
+#' @param keep.mcols Logical scalar, specifying whether to keep non-BED12 columns in the output object.
+#' @param score String specifying which field to export as the \code{score} field in BED12.
+#' Defaults to "auto" which will choose \code{"score"}, then \code{"counts"}, if present, or fill the column with zeros.
 #'
-#' @param ... Arguments to pass to methods
-#'
-#'      The exact behavior depends on the class of `object`.
-#'
-#'      `GRangesList` This treats `object` as if it were a list of
-#'           transcripts, i.e., each element contains the exons of a
-#'           transcript. The `blockStarts` and `blockSizes` columns are
-#'           derived from the ranges in each element. Also, add `name`
-#'           column from `names(object)`.
-#'
-#' @return A `GRanges`, with the metadata columns `name`, `blockStarts` and
-#'         `blockSizes` added.
+#' @details
+#' Note that setting \code{keep.mcols=TRUE} may cause problems with some parsers.
+#'  
+#' @return A \linkS4class{GRanges} object with the metadata columns \code{name}, \code{blockStarts} and \code{blockSizes}.
 #'
 #' @importFrom rtracklayer asBED
 #' @importFrom IRanges PartitioningByWidth
@@ -183,8 +193,11 @@ setMethod("export.chiasig", "GenomicInteractions", function(GIObject, fn=NULL, s
 #' @importFrom BiocGenerics relist
 #' @importFrom GenomicInteractions anchors swapAnchors
 #' 
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
+#' @rdname asBED
 #' @export
 #' @docType methods
+#' @aliases asBED
 #' @examples
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)
@@ -273,5 +286,5 @@ setMethod("asBED", "GenomicInteractions", function(x, keep.mcols=FALSE, score="s
                   rep(mcols(x)[is_trans, extra_cols,drop=FALSE], 2))
     }
 
-    return(sort(c(output_cis, output_trans)))
+    sort(c(output_cis, output_trans))
 })

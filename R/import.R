@@ -1,22 +1,27 @@
-#' Function to create GenomicInteraction objects from a file
+#' Create GenomicInteraction objects from a file
 #'
-#' Function to create GenomicInteraction objects from a variety of files. The resulting objects contain information
-#' on which genomic regions are interacting with each other, and the number of counts supporting each interaction.
-#' It is also possible to store information on associated p-values and false-discovery rates (FDR).
-#' It is possible to create GenomicInteractions objects for various datasets including Hi-C and ChIA-PET. It is possible
-#' to read interactions from a variety of files including BAM files, bed files (BED12 and BEDPE) and from the output
-#' from standard processing pipelines, such as HOMER and ChIA-PET tool. GenomicInteractions objects can also be created
-#' using calls of the form \code{new("GenomicInteractions", ...)}. For hiclib, it expects the directory in which the files
-#' extracted using h5dictToTxt.py from the hdf5 file are located, where as for all of the other file types it expects the full
-#' filename. Note that recent versions of hiclib (2015-) cannot export the required data and so this function will only work with
-#' older files.
+#' Create \linkS4class{GenomicInteraction} objects from a variety of file formats. 
+#' The resulting objects contain information on which genomic regions are interacting with each other, 
+#' and the number of counts (usually for read pairs) supporting each interaction.
+#' 
+#' @details
+#' This function reads interaction data from a variety of file formats including:
+#' \itemize{
+#' \item BAM files (single or double)
+#' \item BED variants such as BED12 and BEDPE
+#' \item Output of standard processing pipelines such as HOMER and ChIA-PET tool
+#' }
 #'
-#' @param fn Filename or, if type="hiclib", folder
-#' @param type One of "chiapet.tool", "bed12", "bedpe", "hiclib", "homer", "bam", "two.bams".
-#' @param experiment_name Experiment name.
-#' @param description Description of experiment.
-#' @param chr_names a vector of chromosome names in order, required for re-naming chromosomes for hiclib import
-#' @return a GenomicInteractions object
+#' For \code{type="hiclib"}, the function expects that \code{fn} contains a path to the directory in which the files were extracted using \code{h5dictToTxt.py} from the hdf5 file.
+#' Note that recent versions of hiclib (2015-) cannot export the required data and so this function will only work with older files.
+#' 
+#' @param fn String containing a path to the file (or for \code{type="hiclib"}, directory) containing the interaction data.
+#' @param type String specifying the format of \code{fn}.
+#' @param experiment_name String containing the experiment name.
+#' @param description String describing the experiment.
+#' @param chr_names Character vector of chromosome names in order, required for re-naming chromosomes with \code{type="hiclib"}.
+#'
+#' @return A \linkS4class{GenomicInteractions} object containing information extracted from \code{fn}.
 #'
 #' @importFrom Rsamtools scanBamFlag ScanBamParam scanBam bamFlagAsBitMatrix
 #' @importFrom IRanges IRanges
@@ -30,9 +35,21 @@
 #'
 #' k562.rep1
 #'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
 #' @export
-makeGenomicInteractionsFromFile = function(fn, type, experiment_name="", description="", chr_names = NULL){
-	em = NULL
+#' @references
+#' Heinz S, Benner C, Spann N, Bertolino E et al. (2010).
+#' Simple combinations of lineage-determining transcription factors prime cis-regulatory elements required for macrophage and B cell identities. 
+#' \emph{Mol. Cell} 38(4), 576-589.
+#'
+#' Li G et al. (2010).
+#' ChIA-PET tool for comprehensive chromatin interaction analysis with paired-end tag sequencing.
+#' \emph{Genome Biol.} 11, R22,
+makeGenomicInteractionsFromFile <- function(fn, type=c("chiapet.tool", "bed12", "bedpe", "hiclib", "homer", "bam", "two.bams"), 
+    experiment_name="", description="", chr_names = NULL)
+{
+	em <- NULL
+    type <- match.arg(type)
     if (type == "chiapet.tool") {
         dat = read.table(fn, header=TRUE, stringsAsFactors=FALSE, sep="\t")
         if (!all(vapply(dat[,c(2,3,5,6,7,8,9)], is.numeric, logical(1))) ||
@@ -119,9 +136,6 @@ makeGenomicInteractionsFromFile = function(fn, type, experiment_name="", descrip
   	    anchor_one = dat[[1]]
   	    anchor_two = dat[[2]]
   	    counts = as.integer(rep(1, length(anchor_one)))
-
-    } else {
-          stop("type is not one of \"chiapet.tool\", \"chiapet.encode\", \"bed12\", \"bedpe\", \"hiclib\", \"homer\", \"bam\", \"two.bams\"")
   	}
 
 	if (!.isEqualSeqInfo(anchor_one, anchor_two)) {
