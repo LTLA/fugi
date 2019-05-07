@@ -4,13 +4,19 @@
 #' simply by calling the \code{\link{pairdist}} function from \pkg{GenomicInteractions}.
 #' 
 #' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param method Character vector indicating how to calculate distances, must
-#'        be one of `midpoint', `outer', `inner'.
-#' @param floor A logical specifying whether to round down distances to nearest 
-#' base pair or not. Default TRUE.
+#' @param method String indicating how to calculate distances.
+#' Should be \code{"midpoint"}, \code{"outer"} or \code{"inner"}. 
+#' @param floor A logical specifying whether to round down distances to the nearest base pair. 
+#' Defaults to \code{TRUE}.
 #'
-#' @return An vector containing the distances between anchors/GRanges,
-#'         NA if on different chromosomes, rounded down to the nearest bp.
+#' @return A numeric vector containing the distances between anchors/GRanges.
+#' If \code{floor=TRUE}, this vector is integer.
+#' Interactions on different chromosomes have distances set to \code{NA}.
+#'
+#' @author Malcolm Perry, Elizabeth Ing-Simmons
+#' @seealso
+#' \code{\link{pairdist}}, which this function calls.
+#'
 #' @examples
 #' anchor.one <- GRanges(c("chr1", "chr1", "chr1", "chr1"), 
 #'     IRanges(c(10, 20, 30, 20), width=5))
