@@ -123,8 +123,8 @@ setMethod("subset", signature(x="InteractionTrack"), function(x, from, to, chrom
 #'     IRanges(c(100, 200, 300, 50), width=5))
 #'
 #' interaction_counts = sample(1:10, 4)
-#' test <- GenomicInteractions(anchor.one, anchor.two, experiment_name="test")
-#' metadata(test) <- list(description="this is a test", counts=interaction_counts)
+#' test <- GenomicInteractions(anchor.one, anchor.two, counts=interaction_counts)
+#' metadata(test) <- list(description="this is a test", experiment_name="test")
 #' interactions.track = InteractionTrack(name="Test", test, chromosome="chr1")                        
 #' plotTracks(list(interactions.track), chromosome="chr1", from=0, to=500)
 #' 

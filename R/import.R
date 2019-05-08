@@ -1,6 +1,6 @@
 #' Create GenomicInteraction objects from a file
 #'
-#' Create \linkS4class{GenomicInteraction} objects from a variety of file formats. 
+#' Create \linkS4class{GenomicInteractions} objects from a variety of file formats. 
 #' The resulting objects contain information on which genomic regions are interacting with each other, 
 #' and the number of counts (usually for read pairs) supporting each interaction.
 #' 
