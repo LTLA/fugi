@@ -23,7 +23,7 @@ makeGenomicInteractionsFromFile(fn, type = c("chiapet.tool", "bed12",
 A \linkS4class{GenomicInteractions} object containing information extracted from \code{fn}.
 }
 \description{
-Create \linkS4class{GenomicInteraction} objects from a variety of file formats. 
+Create \linkS4class{GenomicInteractions} objects from a variety of file formats. 
 The resulting objects contain information on which genomic regions are interacting with each other, 
 and the number of counts (usually for read pairs) supporting each interaction.
 }

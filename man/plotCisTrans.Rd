@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotCisTrans}
 \alias{plotCisTrans}
-\title{Plots the percentages of cis and trans interactions for a \linkS4class{GenomicInteractions} object as a donut plot.}
+\title{Plot cis/trans percentages}
 \usage{
 plotCisTrans(GIObject)
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 }
 \value{
-A ggplot2 plot
+A ggplot2 plot.
 }
 \description{
 Plots the percentages of cis and trans interactions for a \linkS4class{GenomicInteractions} object as a donut plot.

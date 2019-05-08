@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotInteractionAnnotations}
 \alias{plotInteractionAnnotations}
-\title{Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object}
+\title{Plot interaction types}
 \usage{
 plotInteractionAnnotations(GIObject, node.classes = NULL,
   viewpoints = NULL, other = 0, keep.order = FALSE, legend = FALSE)
@@ -10,8 +10,8 @@ plotInteractionAnnotations(GIObject, node.classes = NULL,
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
-\item{node.classes}{Optional. All node.classes to include in the analysis.
-Default: all node classes.}
+\item{node.classes}{Character vector specifying node.classes to include in the analysis.
+Defaults to all available node classes.}
 
 \item{viewpoints}{Optional. If set will only consider interactions where at
 least one anchor is of this node class. Default: all classes in node.classes.}
@@ -29,7 +29,7 @@ plot. If FALSE, donut plot is annotated with category names.}
 A ggplot2 plot
 }
 \description{
-Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object
+Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object.
 }
 \examples{
 library("GenomicRanges")

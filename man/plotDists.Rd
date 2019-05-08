@@ -2,23 +2,23 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotDists}
 \alias{plotDists}
-\title{Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} Object}
+\title{Cis interaction distances}
 \usage{
 plotDists(GIObject, breaks = c(0, 1000, 5000, 10000, 50000, 1e+05, 5e+05,
   1e+06, 2e+06), method = "midpoint")
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{breaks}{A numeric vector of breaks for the histogram}
+\item{breaks}{A numeric vector of breaks for the histogram.}
 
-\item{method}{Method used for distance between anchors. Passed to calculateDistances. One of "midpoint", "inner", or "outer".}
+\item{method}{String specifying the method used for distance between anchors, see \code{\link{calculateDistances}}.}
 }
 \value{
-A ggplot2 plot
+A ggplot2 plot.
 }
 \description{
-Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} Object
+Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} object.
 }
 \examples{
 data(hic_example_data)

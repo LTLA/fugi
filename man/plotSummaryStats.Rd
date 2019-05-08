@@ -2,25 +2,24 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotSummaryStats}
 \alias{plotSummaryStats}
-\title{Plot summary statistics for a \linkS4class{GenomicInteractions} object}
+\title{Plot summary statistics}
 \usage{
 plotSummaryStats(GIObject, other = 5, cut = 10)
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{other}{Default 5. Passed to plotInteractionAnnotations. Interaction types making up fewer than "other" percent of the total interactions will be consolidated into a single "other" category.}
+\item{other}{Numeric scalar passed to \code{\link{plotInteractionAnnotations}}.}
 
-\item{cut}{Default 10. Passed to plotCounts.All interactions with counts > cut are consolidated into a single category.}
+\item{cut}{Numeric scalar passed to \code{\link{plotCounts}}.}
 }
 \value{
-invisible(1)
+A plot is made on the current graphics device.
+The output of \code{\link{marrangeGrob}} is returned.
 }
 \description{
-Makes summary plots of the counts, interaction distances, interaction
-annotations, and percentage of cis and trans interactions for a
-\linkS4class{GenomicInteractions} object using `plotCounts`, `plotDists`, `plotCisTrans`,
-and `plotInteractionAnnotations`.
+Makes summary plots of the counts, interaction distances, interaction annotations, 
+and percentage of cis and trans interactions for a \linkS4class{GenomicInteractions} object.
 }
 \examples{
 data(hic_example_data)
