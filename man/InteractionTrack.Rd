@@ -4,35 +4,36 @@
 \alias{InteractionTrack}
 \title{Constructor to create an InteractionTrack object}
 \usage{
-InteractionTrack(x, chromosome = "", name = NULL, start = NULL,
+InteractionTrack(x, chromosome = "", name = name(x), start = NULL,
   end = NULL)
 }
 \arguments{
-\item{x}{A GenomicInteractions object}
+\item{x}{A \linkS4class{GenomicInteractions} object.}
 
-\item{chromosome}{specify which chromosome to hold information on - can be null}
+\item{chromosome}{String specifying which chromosome to use to create a track.}
 
-\item{name}{specify the name of the track - if null takes it to be the name of the GenomicInteractions passed}
+\item{name}{String specifying the name of the track.}
 
-\item{start}{specify which start location to hold information on - can be null}
+\item{start}{Integer scalar specifying the start location for the track.}
 
-\item{end}{specify which end location to hold information on - can be null}
+\item{end}{Integer scalar specifying the end location for the track.}
 }
 \value{
-an InteractionTrack object
+An \linkS4class{InteractionTrack} object.
 }
 \description{
-Create InteractionTrack object from an GenomicInteractions object to visualise a specified chromosome.
+Create an \linkS4class{InteractionTrack} object from an \linkS4class{GenomicInteractions} object to visualise a specified chromosome.
 }
 \examples{
-
 library(Gviz)
+anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), 
+    IRanges(c(10, 20, 30, 20), width=5))
+anchor.two = GRanges(c("chr1", "chr1", "chr1", "chr2"), 
+    IRanges(c(100, 200, 300, 50), width=5))
 
-anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), IRanges(c(10, 20, 30, 20), width=5))
-anchor.two = GRanges(c("chr1", "chr1", "chr1", "chr2"), IRanges(c(100, 200, 300, 50), width=5))
 interaction_counts = sample(1:10, 4)
-test <- GenomicInteractions(anchor.one, anchor.two, experiment_name="test", 
-                           description="this is a test", counts=interaction_counts)
+test <- GenomicInteractions(anchor.one, anchor.two, experiment_name="test")
+metadata(test) <- list(description="this is a test", counts=interaction_counts)
 interactions.track = InteractionTrack(name="Test", test, chromosome="chr1")                        
 plotTracks(list(interactions.track), chromosome="chr1", from=0, to=500)
 

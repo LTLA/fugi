@@ -1,17 +1,14 @@
-# Code to plot a set of summary statistics for a \linkS4class{GenomicInteractions} dataset
-
-# Wrapper to plot all...
-#' Plot summary statistics for a \linkS4class{GenomicInteractions} object
+#' Plot summary statistics 
 #'
-#' Makes summary plots of the counts, interaction distances, interaction
-#' annotations, and percentage of cis and trans interactions for a
-#' \linkS4class{GenomicInteractions} object using `plotCounts`, `plotDists`, `plotCisTrans`,
-#' and `plotInteractionAnnotations`.
+#' Makes summary plots of the counts, interaction distances, interaction annotations, 
+#' and percentage of cis and trans interactions for a \linkS4class{GenomicInteractions} object.
 #'
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param other Default 5. Passed to plotInteractionAnnotations. Interaction types making up fewer than "other" percent of the total interactions will be consolidated into a single "other" category.
-#' @param cut Default 10. Passed to plotCounts.All interactions with counts > cut are consolidated into a single category.
-#' @return invisible(1)
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param other Numeric scalar passed to \code{\link{plotInteractionAnnotations}}. 
+#' @param cut Numeric scalar passed to \code{\link{plotCounts}}.
+#'
+#' @return A plot is made on the current graphics device.
+#' The output of \code{\link{marrangeGrob}} is returned. 
 #' @import ggplot2
 #' @importFrom gridExtra marrangeGrob
 #' @export
@@ -38,16 +35,16 @@ plotSummaryStats <- function(GIObject, other=5, cut=10){
   
   p_list <- list(p4, p2, p1, p3)
   p_list <- p_list[lengths(p_list)>0]
-  p <- marrangeGrob(p_list, ncol=2, nrow =2, top = name(GIObject))
-  return(p)
+  marrangeGrob(p_list, ncol=2, nrow =2, top = name(GIObject))
 }
 
-# Cis-trans %
-
+#' Plot cis/trans percentages
+#'
 #' Plots the percentages of cis and trans interactions for a \linkS4class{GenomicInteractions} object as a donut plot.
 #'
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @return A ggplot2 plot
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#'
+#' @return A ggplot2 plot.
 #' @export
 #'
 #' @examples
@@ -90,13 +87,15 @@ plotCisTrans <- function(GIObject){
 
 }
 
-# Distance of cis interactions
-#' Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} Object
+#' Cis interaction distances
 #'
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param breaks A numeric vector of breaks for the histogram
-#' @param method Method used for distance between anchors. Passed to calculateDistances. One of "midpoint", "inner", or "outer".
-#' @return A ggplot2 plot
+#' Plots a histogram of interaction distances for a \linkS4class{GenomicInteractions} object.
+#'
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param breaks A numeric vector of breaks for the histogram.
+#' @param method String specifying the method used for distance between anchors, see \code{\link{calculateDistances}}.
+#'
+#' @return A ggplot2 plot.
 #' @export
 #'
 #' @examples
@@ -127,11 +126,13 @@ plotDists <- function(GIObject, breaks=c(0, 1000, 5000, 10000, 50000, 100000, 50
   return(p)
 }
 
-#' Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object
+#' Plot interaction types
+#'
+#' Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param node.classes Optional. All node.classes to include in the analysis.
-#' Default: all node classes.
+#' @param node.classes Character vector specifying node.classes to include in the analysis.
+#' Defaults to all available node classes.
 #' @param viewpoints Optional. If set will only consider interactions where at
 #' least one anchor is of this node class. Default: all classes in node.classes.
 #' @param other Optional. Interaction types making up fewer than "other" percent
