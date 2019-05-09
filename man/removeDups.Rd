@@ -2,7 +2,7 @@
 % Please edit documentation in R/processing.R
 \name{removeDups}
 \alias{removeDups}
-\title{Remove all but one occurences of a duplicated interaction}
+\title{Remove duplicated interactions}
 \usage{
 removeDups(GIObject)
 }
@@ -13,8 +13,9 @@ removeDups(GIObject)
 A \linkS4class{GenomicInteractions} object that is a subset of the input object.
 }
 \description{
-Removes all but the first occurence of a duplicated interaction (defined as
-having identical coordinates for both anchors). N.B. this does not summarise
-the total counts of all the duplicates. It is designed for removing potential
-PCR duplicates after reading in .bam files.
+Removes all but the first occurence of a duplicated interaction (defined as having identical coordinates for both anchors).
+}
+\details{
+Note that this function will not sum total counts of all the duplicates. 
+It is designed for removing potential PCR duplicates after reading in BAM files.
 }

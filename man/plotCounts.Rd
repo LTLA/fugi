@@ -2,22 +2,24 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{plotCounts}
 \alias{plotCounts}
-\title{Plot a bar chart of the number of interactions supported by different numbers of reads in your data.}
+\title{Plot interaction count frequency}
 \usage{
 plotCounts(GIObject, normalise = FALSE, cut = 10)
 }
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{normalise}{Logical. If TRUE, plots proportion of total reads instead of count.}
+\item{normalise}{Logical scalar specifying whether to plot the proportion of total reads instead of the count.}
 
-\item{cut}{Numeric, can be NULL. Default: 10. All interactions with counts > cut are consolidated into a single category.}
+\item{cut}{Numeric scalar specifying the upper limit on the count,
+above which all interactions are aggregated into a single category.
+Setting this to \code{NULL} will not perform any aggregation.}
 }
 \value{
-A ggplot2 plot
+A ggplot2 plot.
 }
 \description{
-Plot a bar chart of the number of interactions supported by different numbers of reads in your data.
+Plot a bar chart of the number of interactions supported by different numbers of reads in a \linkS4class{GenomicInteractions} object.
 }
 \examples{
 data(hic_example_data)

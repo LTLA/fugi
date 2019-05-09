@@ -9,7 +9,7 @@
 \alias{description<-,GenomicInteractions,ANY-method}
 \alias{interactionCounts<-,GenomicInteractions-method}
 \alias{seqinfo<-,GenomicInteractions-method}
-\title{Functions to set data held in a \linkS4class{GenomicInteractions} object.}
+\title{Functions to set interaction data}
 \usage{
 name(GIObject) <- value
 
@@ -115,8 +115,7 @@ interactionCounts(GIObject) <- value
 GenomicInteractions object
 }
 \description{
-Use these functions to set data stored in each of the slots of a
-\linkS4class{GenomicInteractions} object.
+Use these functions to set data stored in the slots of a \linkS4class{GenomicInteractions} object.
 }
 \examples{
 anchor.one = GRanges(c("chr1", "chr1", "chr1", "chr1"), 

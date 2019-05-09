@@ -4,7 +4,7 @@
 \name{countsBetweenAnchors}
 \alias{countsBetweenAnchors}
 \alias{countsBetweenAnchors,GenomicInteractions,GRanges-method}
-\title{Summarise interactions between defined anchors}
+\title{Summarise interactions between anchors}
 \usage{
 countsBetweenAnchors(x, y, ...)
 
@@ -12,19 +12,23 @@ countsBetweenAnchors(x, y, ...)
   ignore_overlaps = FALSE, ...)
 }
 \arguments{
-\item{x}{A \linkS4class{GenomicInteractions} object}
+\item{x}{A \linkS4class{GenomicInteractions} object.}
 
-\item{y}{A GenomicRanges object}
+\item{y}{A \linkS4class{GenomicRanges} object.}
 
-\item{...}{Extra parameters to pass to findOverlaps}
+\item{...}{Extra parameters to pass to \code{\link{findOverlaps}} for \linkS4class{GenomicInteractions} objects.}
 
-\item{ignore_overlaps}{Allow overlapping anchors. Use this when you have overlapping anchors
-but be careful with multi-mapping. The "within" option can help with this.}
+\item{ignore_overlaps}{Logical scalar indicating whether overlapping anchors should be disallowed.}
 }
 \value{
-A \linkS4class{GenomicInteractions} object with annotated counts between anchors
+A \linkS4class{GenomicInteractions} object with annotated counts between anchors.
 }
 \description{
 Calculate the number of of paired-end reads mapping between a defined set of anchors.
 This function will ignore counts present in the input data.
+}
+\details{
+By default, \code{ignore_overlaps=FALSE} will raise an error when overlapping anchors are observed.
+This can be turned off but users should be careful with multi-mapping. 
+Setting \code{type="within"} in \code{\link{findOverlaps}} can reduce multi-mapping effects.
 }

@@ -2,31 +2,34 @@
 % Please edit documentation in R/processing.R
 \name{get_self_ligation_threshold}
 \alias{get_self_ligation_threshold}
-\title{Get self ligation threshold with SD method from Heidari et al}
+\title{Get self ligation threshold}
 \usage{
 get_self_ligation_threshold(GIObject, bins = 100, distance_th = 4e+05,
   plot = TRUE)
 }
 \arguments{
-\item{GIObject}{a \linkS4class{GenomicInteractions} object of paired end reads}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object of paired end reads.}
 
-\item{bins}{Number of evenly sized bins to use.}
+\item{bins}{Integer scalar specifying the number of evenly sized bins to use.}
 
-\item{distance_th}{The threshold, in base pairs, to use as a cutoff to 
-pick which bins to use to determine the standard deviation.}
+\item{distance_th}{Integer scalar specifying the threshold on the distance (between anchors \code{GIObject}, in base pairs),
+to use as a cutoff to pick which bins to use to determine the standard deviation.}
 
-\item{plot}{TRUE by default. Whether to plot the log2ratio of opposite
-to same strand reads vs distance.}
+\item{plot}{Logical scalar specifying whether to plot the log2-ratio of opposite to same strand read pair frequences against the distance between anchoring reads.}
 }
 \value{
-The cutoff in base pairs below which an interaction is likely to be a self ligation.
+An integer scalar containing the cutoff in base pairs below which an interaction is likely to be a self ligation.
 }
 \description{
-This function calculates a self ligation threshold according to 
-the method published in Heidari et al., Genome Research, 2014. 
-Briefly, paired reads are divided into in evenly sized bins. For
-each bin, the log2 ratio of reads that are aligned to opposite strand
-vs to the same strand is calculated. Twice the standard deviation of 
-this ratio at high distances is used a cutoff to determine which bins 
-are likely to contain mostly self-liagted reads.
+Calculates a self ligation threshold according to the method published in Heidari et al. (2014).
+}
+\details{
+Briefly, paired reads are divided into in evenly sized bins. 
+For each bin, the log2-ratio of reads that are aligned to opposite strand versus to the same strand is calculated. 
+Twice the standard deviation of this ratio at high distances is used a cutoff to determine which bins are likely to contain mostly self-ligated reads.
+}
+\references{
+Heidari N et al. (2014).
+Genome-wide map of regulatory interactions in the human genome.
+\emph{Genome Res.} 24(12), 1905-1917.
 }

@@ -2,25 +2,26 @@
 % Please edit documentation in R/plotSummaryStats.R
 \name{categoriseInteractions}
 \alias{categoriseInteractions}
-\title{Get the numbers of interaction types existing in your data}
+\title{Categorize interaction types}
 \usage{
 categoriseInteractions(GIObject, node.classes = NULL,
   viewpoints = NULL)
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{node.classes}{Optional. All node.classes to include in the analysis.
-Default: all node classes.}
+\item{node.classes}{Character vector specifying the node classes to include in the plot.
+Defaults to all node classes.}
 
-\item{viewpoints}{Optional. If set will only consider interactions where at
-least one anchor is of this node class. Default: all classes in node.classes.}
+\item{viewpoints}{Character vector of acceptable node classes,
+where interactions are only considered if least one anchor is of an acceptable node class. 
+Defaults to all classes in \code{node.classes}.}
 }
 \value{
 A data.frame.
 }
 \description{
-Get the numbers of interaction types existing in your data
+Get the numbers of interaction types existing in a \linkS4class{GenomicInteractions} object.
 }
 \examples{
 library("GenomicRanges")

@@ -12,19 +12,23 @@ annotateRegions(GIObject, name, dat)
   name, dat)
 }
 \arguments{
-\item{GIObject}{A GenomicInteractions or GenomicInteractions object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{name}{Character. Will be used as a column name.}
+\item{name}{Character vector to be used as the column name.}
 
-\item{dat}{Vector of the same length as the GenomicInteractions object,
+\item{dat}{Vector of the same length as \code{regions(GIObject, 1)},
 containing data with which to annotate the object.}
 }
 \value{
-invisible(1)
+\code{NULL} is invisibly returned, 
+while the value passed as \code{GIObject} is modified in the global namespace.
 }
 \description{
-Use this function to add metadata parallel to the `regions` slot of a 
-GenomicInteractions or GenomicInteractions object.
+This function adds metadata parallel to the \code{regions} slot of a \linkS4class{GenomicInteractions} object.
+}
+\details{
+This function only works if both \code{regions(GIObject, 1)} and \code{regions(GIObject, 2)} are identical.
+In cases where they are not identical, it doesn't make sense to assign a single \code{dat} vector to the metadata.
 }
 \examples{
 data(hic_example_data)

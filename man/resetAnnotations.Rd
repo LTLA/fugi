@@ -4,21 +4,22 @@
 \name{resetAnnotations}
 \alias{resetAnnotations}
 \alias{resetAnnotations,GenomicInteractions-method}
-\title{Reset annotations made to a GenomicInteractions object}
+\title{Reset annotations}
 \usage{
 resetAnnotations(GIObject)
 
 \S4method{resetAnnotations}{GenomicInteractions}(GIObject)
 }
 \arguments{
-\item{GIObject}{An annotated GenomicInteractions object.}
+\item{GIObject}{An annotated \linkS4class{GenomicInteractions} object.}
 }
 \value{
-invisible(1)
+\code{NULL} is invisibly returned, 
+while the value passed as \code{GIObject} is modified in the global namespace.
 }
 \description{
-This function removes all annotations from a \linkS4class{GenomicInteractions} object by
-deleting all of the metadata columns associated with both anchors.
+This function removes all annotations from a \linkS4class{GenomicInteractions} object,
+by deleting all of the metadata columns associated with both anchors.
 }
 \examples{
 data(hic_example_data)

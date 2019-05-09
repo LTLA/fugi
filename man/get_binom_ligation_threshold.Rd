@@ -2,37 +2,41 @@
 % Please edit documentation in R/processing.R
 \name{get_binom_ligation_threshold}
 \alias{get_binom_ligation_threshold}
-\title{get self ligation threshold with binomial test}
+\title{Get self ligation threshold}
 \usage{
 get_binom_ligation_threshold(GIObject, max.distance = 20000,
   bin.size = 500, p.cutoff = 0.05, adjust = "fdr", plot = TRUE)
 }
 \arguments{
-\item{GIObject}{a \linkS4class{GenomicInteractions} object of paired end reads}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object of paired end reads.}
 
-\item{max.distance}{The maximum distance to consider between reads. 
-Reads further apart than this distance should be very unlikely to be
- self ligations.}
+\item{max.distance}{Integer scalar specifying the maximum distance to consider between reads. 
+Reads further apart than this distance should be very unlikely to be self ligations.}
 
-\item{bin.size}{Bin size in base pairs.}
+\item{bin.size}{Integer sclaar containing the bin size in base pairs.}
 
-\item{p.cutoff}{P value cut off for a significant difference from 50:50. Default: 0.05}
+\item{p.cutoff}{Numeric scalar specifying the p-value cut off for a significant difference from 50:50.}
 
-\item{adjust}{Method to use to adjust p values. Default: fdr. See `help(p.adjust)` for 
-accepted values. Can also be NA for no adjustment.}
+\item{adjust}{String specifying the method to use to adjust p-values, passed to \code{\link{p.adjust}}.
+This can also be NA for no adjustment.}
 
-\item{plot}{TRUE by default. Whether to plot the percentage of reads 
-on opposite strands vs difference and the binomial test p value vs distance.}
+\item{plot}{Logical scalar specifying whether to plot the percentage of reads on opposite strands vs difference,
+as well as the binomial test p value vs distance.}
 }
 \value{
-The cutoff in base pairs below which an interaction is likely to be a self ligation.
+Integer scalar specifying the cutoff in base pairs,
+below which an interaction is likely to be a self ligation.
 }
 \description{
-This function calculates a self ligation threshold according to 
-a method based on that of Heidari et al., Genome Research, 2014. 
-Briefly, paired reads are divided into in evenly spaced bins. For
-each bin, the number of reads that are aligned to opposite strand
-vs to the same strand is calculated. A binomial test is used to test
-if this is significantly different from the 50:50 ratio expected by 
-chance if all reads are real interactions.
+This function calculates a self ligation threshold according to a method based on that of Heidari et al. (2014).
+}
+\details{
+Briefly, paired reads are divided into in evenly spaced bins. 
+For each bin, the number of reads that are aligned to opposite strand vs to the same strand is calculated. 
+A binomial test is used to test if this is significantly different from the 50:50 ratio expected by chance if all reads are real interactions.
+}
+\references{
+Heidari N et al. (2014).
+Genome-wide map of regulatory interactions in the human genome.
+\emph{Genome Res.} 24(12), 1905-1917.
 }

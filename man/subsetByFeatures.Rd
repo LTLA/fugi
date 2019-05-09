@@ -22,18 +22,18 @@ subsetByFeatures(GIObject, features, feature.class = NULL)
   features, feature.class = NULL)
 }
 \arguments{
-\item{GIObject}{A \linkS4class{GenomicInteractions} object}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object.}
 
-\item{features}{A GRanges or GRangesList object, or a character vector containing
-IDs of annotated features, e.g. promoter IDs.}
+\item{features}{A \linkS4class{GRanges} or \linkS4class{GRangesList} object, 
+or a character vector containing IDs of annotated features, e.g. promoter IDs.}
 
-\item{feature.class}{If `features' is a character vector, the corresponding feature name, e.g. "promoter".}
+\item{feature.class}{String containing the feature name to use if \code{features} is a character vector.}
 }
 \value{
-a subsetted \linkS4class{GenomicInteractions} object
+A subsetted \linkS4class{GenomicInteractions} object.
 }
 \description{
-Subsets interactions for which at least one of the anchors overlaps with a given GRanges object.
+Subsets interactions for which at least one of the anchors overlaps with a given \linkS4class{GRanges} object.
 Alternatively, subsets interactions based on annotated feature IDs for a particular feature.
 }
 \examples{

@@ -4,7 +4,7 @@
 \name{annotateInteractions}
 \alias{annotateInteractions}
 \alias{annotateInteractions,GenomicInteractions,list-method}
-\title{Annotate the interactions in a GenomicInteractions object}
+\title{Annotate interactions}
 \usage{
 annotateInteractions(GIObject, annotations)
 
@@ -12,27 +12,28 @@ annotateInteractions(GIObject, annotations)
   annotations)
 }
 \arguments{
-\item{GIObject}{A GenomicInteractions object to be annotated}
+\item{GIObject}{A \linkS4class{GenomicInteractions} object to be annotated.}
 
-\item{annotations}{A list containing GRanges (or GRangesList) objects with which to annotate
-the GenomicInteractions object.}
+\item{annotations}{A list containing \linkS4class{GRanges} (or \linkS4class{GRangesList}) objects to be used to annotate \code{GIObject}.}
 }
 \value{
-invisible(1)
+\code{NULL} is invisibly returned, 
+while the value passed as \code{GIObject} is modified in the global namespace.
 }
 \description{
-This function will annotate both anchors with a list of named GRanges
-objects. Each metadata column is labeled "name.id" and contains the id of
-the genomic interval(s) it overlaps. Anonymous lists will be given names
-"FEATURE#.id" where # is the position in the list.
+This function will annotate the interactions in a \linkS4class{GenomicInteractions} object with node class information.
 }
 \details{
-For each anchor a "node.class" metadata column will also be added, containing
-the name of the list element which was \emph{first} annotated to each range.
-Ranges with no overlaps will be classified as "distal". The identifiers for each 
-individual feature/annotation are taken from either the name of the list item in the 
-case of a GRangesList or from either the names of a the provided GRanges or an id column 
-in its associated metadata.
+For each interaction, this function identifies the entries of \code{annotations} that overlap an anchor region.
+For each entry in \code{annotations}, a metadata column is added to the \linkS4class{GenomicInteractions} object,
+containing a list that specifies the elements inside the entry that overlap each interaction.
+The metadata column is named as \code{NAME.id} where \code{NAME} is the name of the entry.
+Anonymous lists will be given names \code{FEATURE#.id} where \code{#} is the position in the list.
+
+For each anchor, a \code{node.class} metadata column will also be added, 
+containing the name of the list element which was \emph{first} annotated to each range.
+Ranges with no overlaps will be classified as \code{"distal"}. 
+The identifiers for each individual feature/annotation are taken from either the name of the list item in the case of a GRangesList or from either the names of a the provided GRanges or an id column in its associated metadata.
 }
 \examples{
 data(hic_example_data)

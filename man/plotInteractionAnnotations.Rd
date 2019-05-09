@@ -10,23 +10,24 @@ plotInteractionAnnotations(GIObject, node.classes = NULL,
 \arguments{
 \item{GIObject}{A \linkS4class{GenomicInteractions} object}
 
-\item{node.classes}{Character vector specifying node.classes to include in the analysis.
+\item{node.classes}{Character vector specifying the node classes to include in the plot.
 Defaults to all available node classes.}
 
-\item{viewpoints}{Optional. If set will only consider interactions where at
-least one anchor is of this node class. Default: all classes in node.classes.}
+\item{viewpoints}{Character vector of acceptable node classes,
+where interactions are only considered if least one anchor is of an acceptable node class. 
+Defaults to all classes in \code{node.classes}.}
 
-\item{other}{Optional. Interaction types making up fewer than "other" percent
-of the total interactions will be consolidated into a single "other" category.}
+\item{other}{Numeric scalar of the minimum proportion for an interaction type to be shown.
+Interaction types making up fewer than \code{other} percent of the total interactions will be consolidated into a single \dQuote{other} category.}
 
-\item{keep.order}{Optional. Logical. Keep original order of node.classes for
-plotting or not. Default: FALSE, alphabetical order.}
+\item{keep.order}{Logical scalar specifying whether the original order of \code{node.classes} should be retained for plotting.
+Default is to use the alphabetical order.}
 
-\item{legend}{Optional. Logical. If TRUE, legend is plotted to right of donut
-plot. If FALSE, donut plot is annotated with category names.}
+\item{legend}{Logical scalar specifying whether the legend should be plotted.
+If \code{FALSE}, donut plot is annotated with category names.}
 }
 \value{
-A ggplot2 plot
+A ggplot2 plot.
 }
 \description{
 Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object.
