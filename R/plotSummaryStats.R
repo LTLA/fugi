@@ -131,18 +131,19 @@ plotDists <- function(GIObject, breaks=c(0, 1000, 5000, 10000, 50000, 100000, 50
 #' Plot a donut plot of interaction types for an annotated \linkS4class{GenomicInteractions} object.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param node.classes Character vector specifying node.classes to include in the analysis.
+#' @param node.classes Character vector specifying the node classes to include in the plot.
 #' Defaults to all available node classes.
-#' @param viewpoints Optional. If set will only consider interactions where at
-#' least one anchor is of this node class. Default: all classes in node.classes.
-#' @param other Optional. Interaction types making up fewer than "other" percent
-#' of the total interactions will be consolidated into a single "other" category.
-#' @param keep.order Optional. Logical. Keep original order of node.classes for
-#' plotting or not. Default: FALSE, alphabetical order.
-#' @param legend Optional. Logical. If TRUE, legend is plotted to right of donut
-#' plot. If FALSE, donut plot is annotated with category names.
+#' @param viewpoints Character vector of acceptable node classes,
+#' where interactions are only considered if least one anchor is of an acceptable node class. 
+#' Defaults to all classes in \code{node.classes}.
+#' @param other Numeric scalar of the minimum proportion for an interaction type to be shown.
+#' Interaction types making up fewer than \code{other} percent of the total interactions will be consolidated into a single \dQuote{other} category.
+#' @param keep.order Logical scalar specifying whether the original order of \code{node.classes} should be retained for plotting.
+#' Default is to use the alphabetical order.
+#' @param legend Logical scalar specifying whether the legend should be plotted.
+#' If \code{FALSE}, donut plot is annotated with category names.
 #'
-#' @return A ggplot2 plot
+#' @return A ggplot2 plot.
 #'
 #' @export
 #'
@@ -207,13 +208,16 @@ plotInteractionAnnotations <- function(GIObject, node.classes=NULL, viewpoints=N
   return(p)
 }
 
-#' Get the numbers of interaction types existing in your data
+#' Categorize interaction types
 #'
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param node.classes Optional. All node.classes to include in the analysis.
-#' Default: all node classes.
-#' @param viewpoints Optional. If set will only consider interactions where at
-#' least one anchor is of this node class. Default: all classes in node.classes.
+#' Get the numbers of interaction types existing in a \linkS4class{GenomicInteractions} object.
+#'
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param node.classes Character vector specifying the node classes to include in the plot.
+#' Defaults to all node classes.
+#' @param viewpoints Character vector of acceptable node classes,
+#' where interactions are only considered if least one anchor is of an acceptable node class. 
+#' Defaults to all classes in \code{node.classes}.
 #'
 #' @return A data.frame.
 #' @export
@@ -256,13 +260,17 @@ categoriseInteractions <- function(GIObject, node.classes=NULL, viewpoints=NULL)
   return(dat)
 }
 
-
-#' Plot a bar chart of the number of interactions supported by different numbers of reads in your data.
+#' Plot interaction count frequency
+#'
+#' Plot a bar chart of the number of interactions supported by different numbers of reads in a \linkS4class{GenomicInteractions} object.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object.
-#' @param normalise Logical. If TRUE, plots proportion of total reads instead of count.
-#' @param cut Numeric, can be NULL. Default: 10. All interactions with counts > cut are consolidated into a single category.
-#' @return A ggplot2 plot
+#' @param normalise Logical scalar specifying whether to plot the proportion of total reads instead of the count.
+#' @param cut Numeric scalar specifying the upper limit on the count,
+#' above which all interactions are aggregated into a single category.
+#' Setting this to \code{NULL} will not perform any aggregation.
+#'
+#' @return A ggplot2 plot.
 #' @export
 #'
 #' @examples

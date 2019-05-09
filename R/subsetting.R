@@ -1,14 +1,17 @@
+#' @title
 #' Subset a \linkS4class{GenomicInteractions} object by features
 #'
-#' Subsets interactions for which at least one of the anchors overlaps with a given GRanges object.
+#' @description
+#' Subsets interactions for which at least one of the anchors overlaps with a given \linkS4class{GRanges} object.
 #' Alternatively, subsets interactions based on annotated feature IDs for a particular feature.
 #'
 #' @docType methods
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @param features A GRanges or GRangesList object, or a character vector containing
-#'                      IDs of annotated features, e.g. promoter IDs.
-#' @param feature.class If `features' is a character vector, the corresponding feature name, e.g. "promoter".
-#' @return a subsetted \linkS4class{GenomicInteractions} object
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param features A \linkS4class{GRanges} or \linkS4class{GRangesList} object, 
+#' or a character vector containing IDs of annotated features, e.g. promoter IDs.
+#' @param feature.class String containing the feature name to use if \code{features} is a character vector.
+#' 
+#' @return A subsetted \linkS4class{GenomicInteractions} object.
 #' 
 #' @examples 
 #' data("hic_example_data")
@@ -19,7 +22,7 @@
 #' ids <- names(mm9_refseq_promoters[1:10])
 #' subsetByFeatures(hic_example_data, ids, "promoter")
 #'
-#' @rdname GenomicInteractions-subsetByFeatures-methods
+#' @rdname subsetByFeatures
 #' @export
 #' @importFrom IRanges overlapsAny
 setMethod("subsetByFeatures", c("GenomicInteractions", "GRanges", "missing"), function(GIObject, features, feature.class=NULL){
@@ -27,7 +30,7 @@ setMethod("subsetByFeatures", c("GenomicInteractions", "GRanges", "missing"), fu
     GIObject[i]
 })
 
-#' @rdname GenomicInteractions-subsetByFeatures-methods
+#' @rdname subsetByFeatures
 #' @export
 #' @importFrom IRanges overlapsAny
 setMethod("subsetByFeatures", c("GenomicInteractions", "GRangesList", "missing"), function(GIObject, features, feature.class=NULL){
@@ -35,7 +38,7 @@ setMethod("subsetByFeatures", c("GenomicInteractions", "GRangesList", "missing")
   GIObject[i]
 })
 
-#' @rdname GenomicInteractions-subsetByFeatures-methods
+#' @rdname subsetByFeatures
 #' @export
 #' @importFrom GenomicInteractions anchors regions
 #' @importFrom S4Vectors mcols

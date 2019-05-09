@@ -123,7 +123,7 @@ setGeneric("countsBetweenAnchors",function(x, y, ...) standardGeneric ("countsBe
 ###########################
 
 #' @export
-#' @rdname GenomicInteractions-subsetByFeatures-methods
+#' @rdname subsetByFeatures
 setGeneric("subsetByFeatures",function(GIObject, features, feature.class=NULL){standardGeneric ("subsetByFeatures")})
 
 ##############################

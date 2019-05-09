@@ -1,15 +1,19 @@
-#' Summarise interactions between defined anchors
-#'
+#' Summarise interactions between anchors
+#' 
 #' Calculate the number of of paired-end reads mapping between a defined set of anchors.
 #' This function will ignore counts present in the input data.
 #'
-#' @param x A \linkS4class{GenomicInteractions} object
-#' @param y A GenomicRanges object
-#' @param ignore_overlaps Allow overlapping anchors. Use this when you have overlapping anchors
-#'                        but be careful with multi-mapping. The "within" option can help with this.
-#' @param ... Extra parameters to pass to findOverlaps
+#' @param x A \linkS4class{GenomicInteractions} object.
+#' @param y A \linkS4class{GenomicRanges} object.
+#' @param ignore_overlaps Logical scalar indicating whether overlapping anchors should be disallowed.
+#' @param ... Extra parameters to pass to \code{\link{findOverlaps}} for \linkS4class{GenomicInteractions} objects.
 #'
-#' @return A \linkS4class{GenomicInteractions} object with annotated counts between anchors
+#' @details
+#' By default, \code{ignore_overlaps=FALSE} will raise an error when overlapping anchors are observed.
+#' This can be turned off but users should be careful with multi-mapping. 
+#' Setting \code{type="within"} in \code{\link{findOverlaps}} can reduce multi-mapping effects.
+#'
+#' @return A \linkS4class{GenomicInteractions} object with annotated counts between anchors.
 #' @rdname countsBetweenAnchors-methods
 #' @docType methods
 #' 
@@ -17,7 +21,7 @@
 #' @export
 setMethod("countsBetweenAnchors", c("GenomicInteractions", "GRanges"), function(x, y, ignore_overlaps=FALSE, ...) {
     #check anchors are unique
-    if (ignore_overlaps == FALSE && any(countOverlaps(y, y) > 1)) stop("anchors are not unique")
+    if (!ignore_overlaps && any(countOverlaps(y, y) > 1)) stop("anchors are not unique")
     
     # this can probably be more efficient! to do: rewrite
     one = overlapsAny(anchorOne(x), y, ...)
@@ -45,14 +49,16 @@ setMethod("countsBetweenAnchors", c("GenomicInteractions", "GRanges"), function(
     return(sort(final_counts))
 })
 
-#' Remove all but one occurences of a duplicated interaction
+#' Remove duplicated interactions
 #'
-#' Removes all but the first occurence of a duplicated interaction (defined as
-#' having identical coordinates for both anchors). N.B. this does not summarise
-#' the total counts of all the duplicates. It is designed for removing potential
-#' PCR duplicates after reading in .bam files.
+#' Removes all but the first occurence of a duplicated interaction (defined as having identical coordinates for both anchors). 
+#'
+#' @details
+#' Note that this function will not sum total counts of all the duplicates. 
+#' It is designed for removing potential PCR duplicates after reading in BAM files.
 #'
 #' @param GIObject A \linkS4class{GenomicInteractions} object.
+#'
 #' @return A \linkS4class{GenomicInteractions} object that is a subset of the input object.
 #' @export
 
@@ -68,13 +74,13 @@ removeDups <- function(GIObject){
     return(GIObject[idx])
 }
 
-#' Tests whether anchors have the same strand.
+#' Check if anchors have the same strand
 #'
-#' This is designed for processing .bam files.
+#' Tests whether anchors have the same strand, for use in processing paired reads from BAM files.
 #'
-#' @param GIObject A \linkS4class{GenomicInteractions} object
-#' @return A logical vector denoting with TRUE if both anchors of an interaction
-#'  are on the same strand and FALSE otherwise.
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @return A logical vector indicating if both anchors of an interaction are on the same strand.
+#'
 #' @importFrom GenomicInteractions anchors regions
 #' @importFrom BiocGenerics strand
 sameStrand <- function(GIObject){
@@ -85,28 +91,30 @@ sameStrand <- function(GIObject){
     strand(r1)[a1]==strand(r2)[a2]
 }
 
-#' Get self ligation threshold with SD method from Heidari et al
+#' Get self ligation threshold 
 #' 
-#' This function calculates a self ligation threshold according to 
-#' the method published in Heidari et al., Genome Research, 2014. 
-#' Briefly, paired reads are divided into in evenly sized bins. For
-#' each bin, the log2 ratio of reads that are aligned to opposite strand
-#' vs to the same strand is calculated. Twice the standard deviation of 
-#' this ratio at high distances is used a cutoff to determine which bins 
-#' are likely to contain mostly self-liagted reads.
+#' Calculates a self ligation threshold according to the method published in Heidari et al. (2014).
 #' 
-#' @param GIObject a \linkS4class{GenomicInteractions} object of paired end reads
-#' @param bins Number of evenly sized bins to use.
-#' @param distance_th The threshold, in base pairs, to use as a cutoff to 
-#' pick which bins to use to determine the standard deviation.
-#' @param plot TRUE by default. Whether to plot the log2ratio of opposite
-#' to same strand reads vs distance.
+#' @param GIObject A \linkS4class{GenomicInteractions} object of paired end reads.
+#' @param bins Integer scalar specifying the number of evenly sized bins to use.
+#' @param distance_th Integer scalar specifying the threshold on the distance (between anchors \code{GIObject}, in base pairs),
+#' to use as a cutoff to pick which bins to use to determine the standard deviation.
+#' @param plot Logical scalar specifying whether to plot the log2-ratio of opposite to same strand read pair frequences against the distance between anchoring reads.
 #'
+#' @details
+#' Briefly, paired reads are divided into in evenly sized bins. 
+#' For each bin, the log2-ratio of reads that are aligned to opposite strand versus to the same strand is calculated. 
+#' Twice the standard deviation of this ratio at high distances is used a cutoff to determine which bins are likely to contain mostly self-ligated reads.
+#'
+#' @references
+#' Heidari N et al. (2014).
+#' Genome-wide map of regulatory interactions in the human genome.
+#' \emph{Genome Res.} 24(12), 1905-1917.
+#' 
 #' @importFrom dplyr mutate_ group_by_ n summarise_ 
 #' @import ggplot2
 #' @export
-#' @return The cutoff in base pairs below which an interaction is likely to be a self ligation.
-
+#' @return An integer scalar containing the cutoff in base pairs below which an interaction is likely to be a self ligation.
 get_self_ligation_threshold <- function(GIObject, bins=100, distance_th=400000, plot=TRUE){
     #get df
     stranded_df <- data.frame(Distance=calculateDistances(GIObject), SameStrand=sameStrand(GIObject))
@@ -151,31 +159,34 @@ get_self_ligation_threshold <- function(GIObject, bins=100, distance_th=400000, 
     return(bp_cutoff)
 }
 
-#' get self ligation threshold with binomial test
+#' Get self ligation threshold 
 #' 
-#' This function calculates a self ligation threshold according to 
-#' a method based on that of Heidari et al., Genome Research, 2014. 
-#' Briefly, paired reads are divided into in evenly spaced bins. For
-#' each bin, the number of reads that are aligned to opposite strand
-#' vs to the same strand is calculated. A binomial test is used to test
-#' if this is significantly different from the 50:50 ratio expected by 
-#' chance if all reads are real interactions. 
+#' This function calculates a self ligation threshold according to a method based on that of Heidari et al. (2014). 
 #' 
-#' @param GIObject a \linkS4class{GenomicInteractions} object of paired end reads
-#' @param bin.size Bin size in base pairs.
-#' @param max.distance The maximum distance to consider between reads. 
-#' Reads further apart than this distance should be very unlikely to be
-#'  self ligations.
-#' @param p.cutoff P value cut off for a significant difference from 50:50. Default: 0.05
-#' @param adjust Method to use to adjust p values. Default: fdr. See `help(p.adjust)` for 
-#' accepted values. Can also be NA for no adjustment.
-#' @param plot TRUE by default. Whether to plot the percentage of reads 
-#' on opposite strands vs difference and the binomial test p value vs distance.
+#' @param GIObject A \linkS4class{GenomicInteractions} object of paired end reads.
+#' @param bin.size Integer sclaar containing the bin size in base pairs.
+#' @param max.distance Integer scalar specifying the maximum distance to consider between reads. 
+#' Reads further apart than this distance should be very unlikely to be self ligations.
+#' @param p.cutoff Numeric scalar specifying the p-value cut off for a significant difference from 50:50. 
+#' @param adjust String specifying the method to use to adjust p-values, passed to \code{\link{p.adjust}}.
+#' This can also be NA for no adjustment.
+#' @param plot Logical scalar specifying whether to plot the percentage of reads on opposite strands vs difference,
+#' as well as the binomial test p value vs distance.
+#'
+#' @details
+#' Briefly, paired reads are divided into in evenly spaced bins. 
+#' For each bin, the number of reads that are aligned to opposite strand vs to the same strand is calculated. 
+#' A binomial test is used to test if this is significantly different from the 50:50 ratio expected by chance if all reads are real interactions. 
+#'
+#' @references
+#' Heidari N et al. (2014).
+#' Genome-wide map of regulatory interactions in the human genome.
+#' \emph{Genome Res.} 24(12), 1905-1917.
+#'
+#' @return Integer scalar specifying the cutoff in base pairs,
+#' below which an interaction is likely to be a self ligation.
 #' @importFrom stats binom.test complete.cases p.adjust sd
 #' @export
-#' @return The cutoff in base pairs below which an interaction is likely to be a self ligation.
-
-
 get_binom_ligation_threshold = function(GIObject, max.distance=20000, bin.size=500, p.cutoff=0.05, adjust="fdr", plot=TRUE){
 
     #make data frame

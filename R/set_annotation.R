@@ -1,10 +1,13 @@
-#' Reset annotations made to a GenomicInteractions object
+#' Reset annotations
 #'
-#' This function removes all annotations from a \linkS4class{GenomicInteractions} object by
-#' deleting all of the metadata columns associated with both anchors.
+#' This function removes all annotations from a \linkS4class{GenomicInteractions} object,
+#' by deleting all of the metadata columns associated with both anchors.
 #'
-#' @param GIObject An annotated GenomicInteractions object.
-#' @return invisible(1)
+#' @param GIObject An annotated \linkS4class{GenomicInteractions} object.
+#'
+#' @return \code{NULL} is invisibly returned, 
+#' while the value passed as \code{GIObject} is modified in the global namespace.
+#' 
 #' @examples
 #' data(hic_example_data)
 #' hic_example_data <- updateObject(hic_example_data)
@@ -27,19 +30,24 @@ setMethod("resetAnnotations", "GenomicInteractions", function(GIObject){
     }
     regions(GIObject, type=NULL) <- fsets
     assign(objName, GIObject, envir = parent.frame())
-    invisible(1)
+    invisible(NULL)
 })
 
 #' Annotate regions
 #'
-#' Use this function to add metadata parallel to the `regions` slot of a 
-#' GenomicInteractions or GenomicInteractions object.
+#' This function adds metadata parallel to the \code{regions} slot of a \linkS4class{GenomicInteractions} object.
 #' 
-#' @param GIObject A GenomicInteractions or GenomicInteractions object
-#' @param name Character. Will be used as a column name.
-#' @param dat Vector of the same length as the GenomicInteractions object,
+#' @param GIObject A \linkS4class{GenomicInteractions} object.
+#' @param name Character vector to be used as the column name.
+#' @param dat Vector of the same length as \code{regions(GIObject, 1)},
 #' containing data with which to annotate the object. 
-#' @return invisible(1)
+#'
+#' @details
+#' This function only works if both \code{regions(GIObject, 1)} and \code{regions(GIObject, 2)} are identical.
+#' In cases where they are not identical, it doesn't make sense to assign a single \code{dat} vector to the metadata.
+#' 
+#' @return \code{NULL} is invisibly returned, 
+#' while the value passed as \code{GIObject} is modified in the global namespace.
 #' 
 #' @docType methods
 #' @examples 
@@ -67,24 +75,28 @@ setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), fu
     invisible(1)
 })
 
-#' Annotate the interactions in a GenomicInteractions object
+#' Annotate interactions 
 #'
-#' This function will annotate both anchors with a list of named GRanges
-#' objects. Each metadata column is labeled "name.id" and contains the id of
-#' the genomic interval(s) it overlaps. Anonymous lists will be given names
-#' "FEATURE#.id" where # is the position in the list.
+#' This function will annotate the interactions in a \linkS4class{GenomicInteractions} object with node class information.
+#' 
+#' @details
+#' For each interaction, this function identifies the entries of \code{annotations} that overlap an anchor region.
+#' For each entry in \code{annotations}, a metadata column is added to the \linkS4class{GenomicInteractions} object,
+#' containing a list that specifies the elements inside the entry that overlap each interaction.
+#' The metadata column is named as \code{NAME.id} where \code{NAME} is the name of the entry.
+#' Anonymous lists will be given names \code{FEATURE#.id} where \code{#} is the position in the list.
 #'
-#' For each anchor a "node.class" metadata column will also be added, containing
-#' the name of the list element which was \emph{first} annotated to each range.
-#' Ranges with no overlaps will be classified as "distal". The identifiers for each 
-#' individual feature/annotation are taken from either the name of the list item in the 
-#' case of a GRangesList or from either the names of a the provided GRanges or an id column 
-#' in its associated metadata.
+#' For each anchor, a \code{node.class} metadata column will also be added, 
+#' containing the name of the list element which was \emph{first} annotated to each range.
+#' Ranges with no overlaps will be classified as \code{"distal"}. 
+#' The identifiers for each individual feature/annotation are taken from either the name of the list item in the case of a GRangesList or from either the names of a the provided GRanges or an id column in its associated metadata.
 #'
-#' @param GIObject A GenomicInteractions object to be annotated
-#' @param annotations A list containing GRanges (or GRangesList) objects with which to annotate
-#'             the GenomicInteractions object.
-#' @return invisible(1)
+#' @param GIObject A \linkS4class{GenomicInteractions} object to be annotated.
+#' @param annotations A list containing \linkS4class{GRanges} (or \linkS4class{GRangesList}) objects to be used to annotate \code{GIObject}.
+#'
+#' @return \code{NULL} is invisibly returned, 
+#' while the value passed as \code{GIObject} is modified in the global namespace.
+#'
 #' @docType methods
 #' 
 #' @examples
