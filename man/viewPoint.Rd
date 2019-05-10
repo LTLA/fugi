@@ -9,33 +9,29 @@ viewPoint(x, bait, region = NULL, ...)
 \arguments{
 \item{x}{A \linkS4class{GenomicInteractions} object.}
 
-\item{bait}{A GRanges object describing bait regions.}
+\item{bait}{A \linkS4class{GRanges} object describing bait regions.}
 
-\item{region}{If present, a GRanges object specifying the
-region to look for bait interactions in.}
+\item{region}{An optional \linkS4class{GRanges} object specifying the region to look for bait interactions in.}
 
-\item{...}{additional arguments to findoverlaps}
+\item{...}{Additional arguments to pass to \code{\link{findOverlaps}}.}
 }
 \value{
 A \linkS4class{GenomicInteractions} object.
 }
 \description{
-This function creates a \linkS4class{GenomicInteractions} object representing interactions 
-originating at a given viewpoint ("bait"), or set of viewpoints. This is 
-similar to the idea of a virtual 4C experiment where you are interested in 
-interactions with a specific region.
+Create a \linkS4class{GenomicInteractions} object with interactions originating at a given \dQuote{bait} viewpoint,
+or a set of such viewpoints. 
+This is similar to the idea of a virtual 4C experiment where you are interested in interactions with a specific region.
 }
 \details{
-The object returned has the "bait" as anchor one, and the interacting regions 
-as anchor two. By default this is genome wide. If you only want to consider 
-interactions within a certain distance around the bait, you can specify a 
-region to consider.
+The object returned has the \dQuote{bait} as anchor one and the interacting regions as anchor two. 
+By default this is genome wide.
+If you only want to consider interactions within a certain distance around the bait, you can specify a region to consider.
 
-Multiple baits can be given, e.g. to find all interactions around promoters.
+Multiple baits can be given, e.g., to find all interactions around promoters.
 
 You may want to visualise the resulting interactions in a genome browser - 
-you can do this by creating coverage over anchor two of the object and exporting 
-as a wig or bedgraph file.
+you can do this by creating coverage over anchor two of the object and exporting as a wig or bedgraph file.
 }
 \examples{
 data(hic_example_data)

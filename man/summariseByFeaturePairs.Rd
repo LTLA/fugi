@@ -4,7 +4,7 @@
 \name{summariseByFeaturePairs}
 \alias{summariseByFeaturePairs}
 \alias{summariseByFeaturePairs,GenomicInteractions-method}
-\title{Summarise the number of interactions between two sets of features.}
+\title{Summarise by feature pairs}
 \usage{
 summariseByFeaturePairs(GIObject, features.one, feature.name.one,
   features.two, feature.name.two)
@@ -13,24 +13,23 @@ summariseByFeaturePairs(GIObject, features.one, feature.name.one,
   features.one, feature.name.one, features.two, feature.name.two)
 }
 \arguments{
-\item{GIObject}{An annotated \linkS4class{GenomicInteractions} object}
+\item{GIObject}{An annotated \linkS4class{GenomicInteractions} object.}
 
-\item{features.one}{A GRanges object containing the feature set of interest}
+\item{features.one}{A \linkS4class{GRanges} object containing the feature set of interest.}
 
-\item{feature.name.one}{The name of the first feature set of interest}
+\item{feature.name.one}{String containing the name of the first feature set of interest.}
 
-\item{features.two}{A GRanges object containing the second feature set of interest}
+\item{features.two}{A \linkS4class{GRanges} object containing the second feature set of interest.}
 
-\item{feature.name.two}{The name of the second feature set of interest}
+\item{feature.name.two}{String containing the name of the second feature set of interest.}
 }
 \value{
-A data frame with one line for each range in `features'
+A data.frame with one line for each combination of \code{features.one} and \code{features.two}.
 }
 \description{
-This function will calculate the number of observed interactions between
-two sets of features provided by the end-user. This allows the summarisation
-of the number of features of a specific type a particular region is involved in 
-and how many interactions exist between them.
+Calculat the number of interactions between two user-provided sets of features. 
+This allows the summarisation of the number of features of a specific type that a particular region is involved in,
+and how many interactions exist between those features.
 }
 \examples{
 data("hic_example_data")

@@ -4,7 +4,7 @@
 \name{summariseByFeatures}
 \alias{summariseByFeatures}
 \alias{summariseByFeatures,GenomicInteractions-method}
-\title{Summary statistics of interactions for a given feature set}
+\title{Summarize by features}
 \usage{
 summariseByFeatures(GIObject, features, feature.name,
   distance.method = "midpoint", annotate.self = FALSE)
@@ -13,29 +13,27 @@ summariseByFeatures(GIObject, features, feature.name,
   feature.name, distance.method = "midpoint", annotate.self = FALSE)
 }
 \arguments{
-\item{GIObject}{An annotated \linkS4class{GenomicInteractions} object}
+\item{GIObject}{An annotated \linkS4class{GenomicInteractions} object.}
 
-\item{features}{A GRanges object containing the feature set}
+\item{features}{A \linkS4class{GRanges} object containing the feature set.}
 
-\item{feature.name}{The name of the feature set}
+\item{feature.name}{String specifying the name of the feature set.}
 
-\item{distance.method}{Method for calculating distances between anchors, see
-?calculateDistances}
+\item{distance.method}{String specifying the method for calculating distances between anchors, 
+see \code{?\link{calculateDistances}}.}
 
-\item{annotate.self}{Logical. Indicates whether to annotate self interactions,
-i.e. where a feature in `features` overlaps both anchors of an interaction.
- Default: FALSE.}
+\item{annotate.self}{Logical scalar indicating whether to annotate self interactions,
+i.e., where a feature in `features` overlaps both anchors of an interaction.}
 }
 \value{
-A data frame with one line for each range in `features'
+A data.frame with one line for each range in \code{features}.
 }
 \description{
-This function will calculate summary statistics for each element in the
-given feature set, including the number of interactions (the sum of all
-interaction counts), number of unique interactions and number of trans-
-(interchromosomal) interations.  It also returns some statistics for the 
-distances of interactions for all interactions of the feature, and for the 
-different interaction types e.g. promoter-distal.
+Compute summary statistics of interactions for a given feature set.
+This includes the number of interactions (the sum of all interaction counts), 
+number of unique interactions and number of trans (i.e., interchromosomal) interations.  
+It also returns some statistics for the distances of interactions for all interactions of the feature, 
+and for the different interaction types, e.g., promoter-distal.
 }
 \examples{
 data("hic_example_data")
