@@ -1,22 +1,20 @@
-#' Summary statistics of interactions for a given feature set
+#' Summarize by features
 #'
-#' This function will calculate summary statistics for each element in the
-#' given feature set, including the number of interactions (the sum of all
-#' interaction counts), number of unique interactions and number of trans-
-#' (interchromosomal) interations.  It also returns some statistics for the 
-#' distances of interactions for all interactions of the feature, and for the 
-#' different interaction types e.g. promoter-distal.
+#' Compute summary statistics of interactions for a given feature set.
+#' This includes the number of interactions (the sum of all interaction counts), 
+#' number of unique interactions and number of trans (i.e., interchromosomal) interations.  
+#' It also returns some statistics for the distances of interactions for all interactions of the feature, 
+#' and for the different interaction types, e.g., promoter-distal.
 #'
-#' @param GIObject An annotated \linkS4class{GenomicInteractions} object
-#' @param features A GRanges object containing the feature set
-#' @param feature.name The name of the feature set
-#' @param distance.method Method for calculating distances between anchors, see
-#'                        ?calculateDistances
-#' @param annotate.self Logical. Indicates whether to annotate self interactions,
-#' i.e. where a feature in `features` overlaps both anchors of an interaction.
-#'  Default: FALSE.
+#' @param GIObject An annotated \linkS4class{GenomicInteractions} object.
+#' @param features A \linkS4class{GRanges} object containing the feature set.
+#' @param feature.name String specifying the name of the feature set.
+#' @param distance.method String specifying the method for calculating distances between anchors, 
+#' see \code{?\link{calculateDistances}}.
+#' @param annotate.self Logical scalar indicating whether to annotate self interactions,
+#' i.e., where a feature in `features` overlaps both anchors of an interaction.
 #'
-#' @return A data frame with one line for each range in `features'
+#' @return A data.frame with one line for each range in \code{features}.
 #'
 #' @docType methods
 #' @import GenomicRanges
@@ -194,20 +192,19 @@ setMethod("summariseByFeatures", "GenomicInteractions",
     return(summary.df)
 })
 
-#' Summarise the number of interactions between two sets of features.
-#' 
-#' This function will calculate the number of observed interactions between
-#' two sets of features provided by the end-user. This allows the summarisation
-#' of the number of features of a specific type a particular region is involved in 
-#' and how many interactions exist between them. 
+#' Summarise by feature pairs
 #'
-#' @param GIObject An annotated \linkS4class{GenomicInteractions} object
-#' @param features.one A GRanges object containing the feature set of interest
-#' @param feature.name.one The name of the first feature set of interest
-#' @param features.two A GRanges object containing the second feature set of interest
-#' @param feature.name.two The name of the second feature set of interest
+#' Calculat the number of interactions between two user-provided sets of features. 
+#' This allows the summarisation of the number of features of a specific type that a particular region is involved in,
+#' and how many interactions exist between those features. 
 #'
-#' @return A data frame with one line for each range in `features'
+#' @param GIObject An annotated \linkS4class{GenomicInteractions} object.
+#' @param features.one A \linkS4class{GRanges} object containing the feature set of interest.
+#' @param feature.name.one String containing the name of the first feature set of interest.
+#' @param features.two A \linkS4class{GRanges} object containing the second feature set of interest.
+#' @param feature.name.two String containing the name of the second feature set of interest.
+#'
+#' @return A data.frame with one line for each combination of \code{features.one} and \code{features.two}.
 #'
 #' @docType methods
 #' @import GenomicRanges
