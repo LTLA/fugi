@@ -1,115 +1,142 @@
 ---
-title: "HiC vignette for fugi package"
+title: Using _fugi_ for analyzing Hi-C data
+author: 
+- name: Malcolm Perry
+- name: Elizabeth Ing-Simmons
 output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
+  BiocStyle::html_document:
+    toc_float: yes
+package: fugi 
+vignette: >
+  %\VignetteIndexEntry{Hi-C data analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: ref.bib
 ---
 
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{fugi-HiC}
--->
-
 ```{r options, echo=FALSE}
+knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE)
 options("scipen"=10, "digits"=5)
 ```
 
-## Introduction
+# Introduction
 
-This vignette shows you how fugi can be used to investigate significant interactions in HiC data that has been analysed using [HOMER](http://homer.salk.edu/homer/) software [1]. fugi can take a HOMER [interaction file](http://homer.salk.edu/homer/interactions/HiCinteractions.html) as input. 
+Hi-C is a technique that involves [chromosome conformation capture](http://en.wikipedia.org/wiki/Chromosome_conformation_capture) followed by high-throughput sequencing. 
+Unlike 3C, 4C or 5C, which target specific regions, Hi-C can provide genome-wide information about the spatial proximity of regions.
+The raw data takes the form of paired-end reads connecting restriction fragments. 
+The resolution of a HiC experiment is limited by the number of paired-end sequencing reads produced and by the sizes of restriction fragments. 
+To increase the power to distinguish real interactions from random noise, HiC data is commonly analysed in bins ranging from 20kb - 1Mb in size. 
+There are a variety of tools available for binning the data, controlling for noise (e.g., self-ligations of restriction fragments), and finding significant interactions. 
 
-HiC data comes from [chromosome conformation capture](http://en.wikipedia.org/wiki/Chromosome_conformation_capture) followed by high-throughput sequencing. Unlike 3C, 4C or 5C, which target specific regions, it can provide genome-wide information about the spatial proximity of regions of the genome. The raw data takes the form of paired-end reads connecting restriction fragments. The resolution of a HiC experiment is limited by the number of paired-end sequencing reads produced and by the sizes of restriction fragments. To increase the power to distinguish real interactions from random noise, HiC data is commonly analysed in bins from 20kb - 1Mb. There are a variety of tools available for binning the data, controlling for noise (e.g. self-ligations of restriction fragments), and finding significant interactions. 
+This vignette shows you how `r Biocpkg("fugi")` can be used to investigate significant interactions in Hi-C data.
+The data we are using comes from the @seitan2013cohesin study and can be downloaded from [GEO](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE48763). 
+It involves Hi-C data from wild-type double positive murine thymocytes. 
+The experiment was carried out using the HindIII restriction enzyme. 
+The paired-end reads were aligned to the mm9 mouse genome assembly and the HOMER software [@heinz2010simple] was used to filter reads and detect significant interactions at a resolution of 100 kbp.
+For the purposes of this vignette, we will consider only data from chromosomes 14 and 15.
 
-The data we are using comes from [this paper](http://genome.cshlp.org/content/23/12/2066.full) [2] and can be downloaded from [GEO](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE48763). It is HiC data from wild type mouse double positive thymocytes. The experiment was carried out using the HindIII restriction enzyme. The paired-end reads were aligned to the mm9 mouse genome assembly and HOMER software was used to filter reads and detect significant interactions at a resolution of 100kb. For the purposes of this vignette, we will consider only data from chromosomes 14 and 15.
+# Making a GenomicInteractions object
 
-## Making a GenomicInteractions object
+Load the data by specifying the file location and experiment type.  
+You can also include an experiment name and description. 
 
-Load the data by specifying the file location and experiment type.  You can also include an experiment name and description. 
-
-```{r imports, warning=F, results="hide", message=FALSE}
-library(Gviz)
+```{r}
 library(fugi)
-```
-
-```{r}
-hic_file <- system.file("extdata", "Seitan2013_WT_100kb_interactions.txt", package="fugi")
-
+hic_file <- system.file("extdata", 
+    "Seitan2013_WT_100kb_interactions.txt", package="fugi")
 hic_data <- makeGenomicInteractionsFromFile(hic_file, 
-                    type="homer", 
-                    experiment_name = "HiC 100kb", 
-                    description = "HiC 100kb resolution")
+    type="homer", 
+    experiment_name = "HiC 100kb", 
+    description = "HiC 100kb resolution")
 seqlengths(hic_data) <- c(chr15 = 103494974, chr14 = 125194864)
+hic_data
 ```
 
-The `GenomicInteractions` class is an extension of the `GInteractions` class from the `InteractionSet` package. The object contains a set of regions involved in interactions, 
-stored as a `GRanges` object, and two sets of indices giving the regions involved in each interaction (the anchors). Metadata for each interaction (e.g. p-value, FDR) is stored as a `DataFrame` accessed by `mcols()` or `elementMetadata()`, similar to the metadata of a simple `GRanges`. You can also access single metadata columns using `$`.
+The `GenomicInteractions` class provides a convenient representation of the genomic regions involved in pairwise interactions.
+Each interaction is considered to have two "anchor" regions, each of which is represented as a `GRanges` object.
+Readers are referred to the `r Biocpkg("GenomicInteractions")` vignettes for more details.
 
 ```{r}
-hic_data
+# Accessing anchors.
+first(hic_data) 
+second(hic_data)
+
+# Accessing the common regions that are
+# re-used across multiple interactions.
+regions(hic_data, 1)
+regions(hic_data, 2) # happens to be the same as regions(, 1).
+```
+
+Metadata for each interaction (e.g., p-values, FDR) is stored as a `DataFrame` accessed by `mcols()`,
+similar to the metadata of a simple `GRanges`. 
+You can also access single metadata columns using `$`.
+
+```{r}
 mcols(hic_data)
 head(hic_data$LogP)
-hic_data$p.value <- exp(hic_data$LogP)
 ```
 
-The set of all regions included in the object can be accessed using `regions()`, or the first and second anchors of the interactions can be accessed using `anchors()`. 
-We provide convenience functions `anchorOne` and `anchorTwo` to return the first/second anchors as GRanges.
+We can check that the first and second anchors are of the expected size (100 kbp).
+Some anchors are shorter than expected due to the bin being at the end of a chromosome. 
 
 ```{r}
-regions(hic_data)
-anchors(hic_data, type = "first")
-anchorOne(hic_data)
-anchorTwo(hic_data)
+summary(width(regions(hic_data, 1)))
 ```
 
-We can check that the anchors are of the expected size (100kb).
-
-```{r}
-summary(width(regions(hic_data)))
-```
-
-Some anchors are shorter than 100kb due to the bin being at the end of a chromosome. There are `r length(hic_data)` interactions in total, with a total of `r sum(interactionCounts(hic_data))` reads supporting them. To calculate the average number of reads per interaction, first use `interactionCounts()` to get the number of reads supporting each individual interaction. 
+There are `r length(hic_data)` interactions in total, with a total of `r sum(interactionCounts(hic_data))` reads supporting them. 
+To calculate the average number of reads per interaction, use `interactionCounts()` to get the number of reads per interaction:
 
 ```{r}
 head(interactionCounts(hic_data))
 mean(interactionCounts(hic_data))
 ```
 
-However, since we have FDRs and p-values, it is probably more informative to use these to find interactions of interest. Note that the FDR column in the dataset will be named differently depending on the number of interactions in your data. For simplicity in this document we will rename it!
+However, since we have FDRs and p-values, it is probably more informative to use these to find interactions of interest. 
+Note that the FDR column in the dataset will be named differently depending on the number of interactions in your data. 
+For simplicity in this document we will rename it!
 
 ```{r}
+hic_data$p.value <- exp(hic_data$LogP)
 plot(density(hic_data$p.value))
 
 hic_data$fdr <- hic_data$FDR.Benjamini..based.on.3.68e.08.total.tests.
 plot(density(hic_data$fdr))
 ```
 
-## Summary statistics
+# Summary statistics
 
-The package provides some functions to plot summary statistics of your data that may be of interest, such as the percentage of interactions that are between regions on the same chromosome (_cis_-interactions) or on different chromosomes (_trans_-interactions), or the number of reads supporting each interaction. These plots can be used to assess the level of noise in your dataset - the presence of many interactions with high FDRs or low read counts suggests that the data may be noisy and contain a lot of false positive interactions. You can subset the GenomicInteractions object by FDR or by number of reads.
+`r Biocpkg("fugi")` provides some functions to plot summary statistics of your data that may be of interest, 
+such as the percentage of interactions that are between regions on the same chromosome (_cis_-interactions),
+the percentage of interactions on different chromosomes (_trans_-interactions), 
+or the number of reads supporting each interaction. 
+
+```{r}
+plotCisTrans(hic_data)
+plotCounts(hic_data, cut=30)
+```
+
+These plots can be used to assess the level of noise in your dataset - 
+for example, the presence of many interactions with high FDRs or low read counts suggests that the data may be noisy and contain a lot of false positive interactions. 
+You can then subset the `GenomicInteractions` object by FDR or by number of reads to remove noisy interactions.
 
 ```{r}
 sum(hic_data$fdr < 0.1)
 hic_data_subset <- hic_data[hic_data$fdr < 0.1]
-```
 
-```{r}
-plotCisTrans(hic_data)
 plotCisTrans(hic_data_subset)
-
-plotCounts(hic_data, cut=30)
 plotCounts(hic_data_subset, cut=30)
 ```
 
-Subsetting by FDR will tend to remove interactions that are supported by fewer reads. _Trans_ interactions tend to have lower read support than _cis_ interactions, so the percentage of _trans_ interactions decreases. 
+Subsetting by FDR will tend to remove interactions that are supported by fewer reads. 
+_Trans_ interactions tend to have fewer reads than _cis_ interactions, so the percentage of _trans_ interactions often decreases. 
 
-## Annotation 
+# Annotation 
 
-One of the most powerful features of GenomicInteractions is that it allows you to annotate interactions by whether the anchors overlap genomic features of interest, such as promoters or enhancers. 
+## Obtaining regions of integerst
 
-Genome annotation data can be obtained from, for example, UCSC databases using the GenomicFeatures package. We will use promoters of Refseq genes extended to a width of 5kb. Downloading all the data can be a slow process, so the data for promoters for chromosomes 14 and 15 is provided with this package.
-
-We will also use a set of putative enhancers defined in Shen et al 2012 using mouse ENCODE data. 
+One of the most powerful features of `r Biocpkg("fugi")` is that it allows you to annotate interactions by whether the anchors overlap genomic features of interest, such as promoters or enhancers. 
+Genome annotation data can be obtained from, for example, UCSC databases using the `r Biocpkg("GenomicFeatures")` package. 
+The code below obtains the promoters of Refseq genes extended to a width of 5 kbp:
 
 ```{r eval=FALSE}
 ## Not run
@@ -133,10 +160,11 @@ na.symbol <- is.na(names(mm9_refseq_promoters))
 names(mm9_refseq_promoters)[na.symbol] <- mm9_refseq_promoters$tx_name[na.symbol]
 ```
 
+... while this next chunk obtains putative enhancers from http://chromosome.sdsc.edu/mouse/download.html,
+defined by @shen2012map using mouse ENCODE data.
+
 ```{r eval=FALSE}
 #Not run
-
-## get enhancers from http://chromosome.sdsc.edu/mouse/download.html
 download.file("http://chromosome.sdsc.edu/mouse/download/thymus.zip", "thymus.zip")
 unzip("thymus.zip")
 thymus_enh <- read.table("thymus/thymus.enhancer.txt", sep="\t", stringsAsFactors = FALSE)
@@ -146,71 +174,101 @@ thymus_enh <- thymus_enh[seqnames(thymus_enh) %in% c("chr14", "chr15")]
 names(thymus_enh) <- paste("ENH", as.character(thymus_enh), sep = "_")
 ```
 
-`annotateInteractions` takes a list of features in GRanges or GRangesList format and annotates the interaction anchors based on overlap with these features. The list of annotation features should have descriptive names, as these names are stored in the annotated GenomicInteractions object and used to assign anchor (node) classes.
+Downloading all the data can be a slow process, so the data for chromosomes 14 and 15 are provided with this package.
 
 ```{r}
 data("mm9_refseq_promoters")
+head(mm9_refseq_promoters)
 data("thymus_enhancers")
+head(thymus_enh)
+```
+
+## Annotating by node classes
+
+`annotateInteractions` takes a list of features in `GRanges` or `GRangesList` format,
+and annotates the interaction anchors based on overlap with these features. 
+The list of annotation features should have descriptive names, 
+as these names are stored in the annotated `GenomicInteractions` object and used to assign anchor (node) classes.
+
+```{r}
 annotation.features <- list(promoter = mm9_refseq_promoters, enhancer = thymus_enh)
 annotateInteractions(hic_data_subset, annotation.features)
 ```
 
-In addition, the features themselves should have names or IDs. These can be the `names()` of the feature object, or an "id" metadata column (note lowercase). These names or IDs for each feature are stored in the metadata columns of the regions of the GenomicInteractions object. Each anchor may overlap multiple features of each type,  so the columns containing feature names or IDs are stored as lists.
+In addition, the features themselves should have names or IDs. 
+These can be the `names()` of the feature object, or an `"id"` metadata column (note lowercase). 
+These names or IDs for each feature are stored in the metadata columns of the regions of the `GenomicInteractions` object. 
+Each anchor may overlap multiple features of each type, so the columns containing feature names or IDs are stored as lists.
 
 ```{r}
-head(regions(hic_data_subset))
-head(regions(hic_data_subset)$promoter.id)
+head(regions(hic_data_subset, 1))
+head(regions(hic_data_subset, 1)$promoter.id)
 ```
 
-## Node classes
+Node classes (or anchor classes) are assigned to each anchor based on overlap with annotation features.
+Classes are assigned based on the order of those features within the list passed to the annotation function,
+whereby features earlier in the list take priority. 
+For example, if the supplied list is `list(promoter=..., transcript=...)`, an anchor that overlaps both a promoter and a transcript will be given the node class `"promoter"`. 
+Any anchors which are not annotated with any of the given features will be assigned the class `"distal"`. 
 
-Node classes (or anchor classes) are assigned to each anchor based on overlap with annotation features and the order of those features within the list passed to the annotation function. If the list is `list(promoter=..., transcript=...)` then an anchor which overlaps both a promoter and a transcript will be given the node class "promoter". The features earlier in the list take priority. Any anchors which are not annotated with any of the given features will be assigned the class "distal". In this case anchors can be "promoter", "enhancer", or "distal".
-
+In this case, anchors can be `"promoter"`, `"enhancer"`, or `"distal"`.
 As the anchors are large, most of them overlap at least one promoter or enhancer.
 
 ```{r}
-table(regions(hic_data_subset)$node.class)
+table(regions(hic_data_subset, 1)$node.class)
 ```
 
 ## Interaction types
 
-Interaction types are determined by the classes of the interacting nodes. As we only have two node classes, we have three possible interaction classes, summarised in the plot below. Most of the interactions are between promoters. We can subset the data to look at interaction types that are of particular interest.
+Interaction types are determined by the classes of the interacting nodes. 
+As we only have three node classes, we have six possible interaction classes, summarised in the plot below. 
+Most of the interactions are between promoters. 
 
 ```{r }
 plotInteractionAnnotations(hic_data_subset, legend = TRUE)
 ```
 
-Distal regions interacting with a promoter may contain regulatory elements such as enhancers or insulators. To get all promoter--distal interactions:
+We can subset the data to look at interaction types that are of particular interest.
+Distal regions interacting with a promoter may contain regulatory elements such as enhancers or insulators. 
+To get all promoter-distal interactions:
 
 ```{r}
 length(hic_data_subset[isInteractionType(hic_data_subset, "promoter", "distal")])
 ```
-As this is a common type of interaction of interest, there is a function specifically for identifying these interactions (see the reference manual or `help(isInteractionType)` for additional built in interaction types). `isInteractionType` can be used with any pair of node classes. There are also functions for identifying _cis_ or _trans_ interactions.
+
+This is more succinctly done using the `is.pd` wrapper function.
+Similar functions are available for other node class combinations, as well as for identifying _cis_ or _trans_ interactions.
 
 ```{r}
 length(hic_data_subset[is.pd(hic_data_subset)])
 sum(is.trans(hic_data_subset))
 ```
 
-However in this case we have annotated the anchors with known enhancer positions, so we can subset the data to get just enhancer--promoter interactions.
+In this case, we have annotated the anchors with known enhancer positions, 
+so we can subset the data to get just enhancer-promoter interactions.
 
-To find the strongest promoter--enhancer interaction:
 ```{r}
 hic_data_ep <- hic_data_subset[isInteractionType(hic_data_subset, "promoter", "enhancer")]
+```
 
+To find the strongest promoter-enhancer interactions, we would do:
+
+```{r}
 max(interactionCounts(hic_data_ep))
 most_counts <- hic_data_ep[which.max(interactionCounts(hic_data_ep))]
 most_counts
 ```
 
-Or the most significant promoter--enhancer interaction:
+Or the most significant promoter-enhancer interaction:
+
 ```{r}
 min(hic_data_ep$p.value)
 min_pval <- hic_data_ep[which.min(hic_data_ep$p.value)]
 min_pval
 ```
 
-The distance between these interacting regions, or any interacting regions, can be found using `calculateDistances`. For _trans_ interactions the distance will be NA. 
+The distance between these interacting regions, or any interacting regions, can be found using `calculateDistances`. 
+For _trans_ interactions, the distance will be `NA`. 
 
 ```{r }
 calculateDistances(most_counts, method="midpoint")
@@ -218,7 +276,7 @@ calculateDistances(min_pval,method="midpoint")
 summary(calculateDistances(hic_data_subset,method="midpoint"))
 ```
 
-## Visualising interactions of interest
+# Visualising interactions of interest
 
 The interaction with the highest number of counts in this dataset is between an anchor containing the promoter of a gene called Trib1, and an adjacent region containing more than ten putative enhancers.
 
@@ -227,56 +285,56 @@ anchorOne(most_counts)$promoter.id
 anchorTwo(most_counts)$enhancer.id
 ```
 
-`GenomicInteractions` provides methods to visualise interactions using the `Gviz` package in order to investigate regions of interest further. For example, we can view interactions in the region around the Trib1 promoter by creating an `InteractionTrack`.
+`r Biocpkg("fugi")` provides methods to visualise interactions using the `r Biocpkg("Gviz")` package.
+For example, we can view interactions in the region around the Trib1 promoter by creating an `InteractionTrack` object:
 
 ```{r}
+library(Gviz)
 Trib1_region <- resize(mm9_refseq_promoters["Trib1"], fix = "center", width = 1000000)
 interaction_track <- InteractionTrack(hic_data_subset, name = "HiC", chromosome = "chr15")
 plotTracks(interaction_track, chromosome="chr15", 
-           from=start(Trib1_region), to=end(Trib1_region))
+    from=start(Trib1_region), to=end(Trib1_region))
 ```
 
-Using functions from the `Gviz` package we can add more data to the plot to visualise features in this region and customise how this data is displayed. Here interactions within the region of interest are coloured red, and interactions with other regions of chr15 are shown in blue. The height of the arcs representing the interactions is scaled to the number of counts supporting them. 
+We can add more data to the plot to visualise features in this region and customise how this data is displayed. 
+Here, interactions within the region of interest are coloured red, and interactions with other regions of chr15 are shown in blue. 
+The height of the arcs representing the interactions is scaled to the number of counts supporting them. 
 
 ```{r}
 promoterTrack <- AnnotationTrack(mm9_refseq_promoters, genome="mm9", name="Promoters",
-                             id=names(mm9_refseq_promoters),  featureAnnotation="id")
+    id=names(mm9_refseq_promoters),  featureAnnotation="id")
 enhTrack <- AnnotationTrack(thymus_enh, genome="mm9", name="Enhancers", stacking = "dense")
 
 displayPars(promoterTrack) <- list(fill = "deepskyblue", col = NA, 
-                                   fontcolor.feature = "black", fontsize=8,
-                                   just.group="below")
+    fontcolor.feature = "black", fontsize=8,
+    just.group="below")
 displayPars(enhTrack) <- list(fill = "black", col = NA)
 displayPars(interaction_track) = list(col.interactions="red", 
-                                      col.anchors.fill ="blue",
-                                      col.anchors.line = "black",
-                                      interaction.dimension="height", 
-                                      interaction.measure ="counts",
-                                      plot.trans=FALSE,
-                                      plot.outside = TRUE, 
-                                      col.outside="lightblue", 
-                                      anchor.height = 0.1)
+    col.anchors.fill ="blue",
+    col.anchors.line = "black",
+    interaction.dimension="height", 
+    interaction.measure ="counts",
+    plot.trans=FALSE,
+    plot.outside = TRUE, 
+    col.outside="lightblue", 
+    anchor.height = 0.1)
 
 plotTracks(list(interaction_track, promoterTrack, enhTrack),
-           chromosome="chr15", from=start(Trib1_region), to=end(Trib1_region), 
-           sizes=c(0.6, 0.2, 0.2))
+    chromosome="chr15", from=start(Trib1_region), to=end(Trib1_region), 
+    sizes=c(0.6, 0.2, 0.2))
 ```
 
-You can see what customisation options are available for a Gviz track using `availableDisplayPars()`, and find more information about this and other track types in the Gviz vignette. 
+You can see what customisation options are available for a `r Biocpkg("Gviz")` track using `availableDisplayPars()`, 
+and find more information about this and other track types in the `r Biocpkg("Gviz")` vignette. 
 
 ## Export to BED12 format
 
-Interactions stored in a `GenomicInteractions` object can be exported to [BED12 format](http://bedtools.readthedocs.org/en/latest/content/general-usage.html) for viewing in a genome browser. Anchors are visualised as thick blocks connected by thinner interactions. 
+Interactions stored in a `GenomicInteractions` object can be exported to [BED12 format](http://bedtools.readthedocs.org/en/latest/content/general-usage.html) for viewing in a genome browser. 
+Anchors are visualised as thick blocks connected by thinner interactions. 
 
 ```{r, eval=FALSE}
 ## Not run
 export.bed12(hic_data_subset, fn="hic_data_FDR0.1.bed", drop.trans = TRUE)
 ```
 
-## References
-
-1. Heinz S, Benner C, Spann N, Bertolino E et al. Simple Combinations of Lineage-Determining Transcription Factors Prime cis-Regulatory Elements Required for Macrophage and B Cell Identities. Mol Cell (2010).
-
-2. Seitan, VC et al. Cohesin-based chromatin interactions enable regulated gene expression within pre-existing architectural compartments. Genome Research (2013).
-
-3. Shen, Y et al. A map of cis-regulatory sequences in the mouse genome. Nature (2012).
+# References
