@@ -6,7 +6,7 @@ Description: Provides high-level methods for manipulating the GenomicInteraction
     to analyze ChIA-PET/Hi-C experiments. This includs annotation of genomic features 
     with interaction information and producing various plots / statistics.
 Authors@R: c(person("Nathan", "Harmston", role="aut"),
-    person("Elizabth", "Ing-Simmons", role=c("cre", "aut"), email="liz.ing-simmons12@csc.mrc.ac.uk"),
+    person("Elizabeth", "Ing-Simmons", role=c("cre", "aut"), email="liz.ingsimmons@gmail.com"),
     person("Malcolm", "Perry", role="aut", email="mgperry32@gmail.com"),
     person("Anja", "Baresic", role="aut"),
     person("Boris", "Lenhard", role="aut"),
