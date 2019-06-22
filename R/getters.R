@@ -76,7 +76,7 @@ setMethod("interactionCounts", "GenomicInteractions", function(GIObject){
 
 #' @importFrom GenomicInteractions regions
 .get_single_regions <- function(GIObject) {
-    regs <- regions(GIObject, type=NULL)
+    regs <- regions(GIObject, type="both")
     if (!identical(regs[[1]], regs[[2]])) {
         stop("expecting the same set of regions for both anchors")
     }

@@ -24,11 +24,11 @@
 #' @importFrom GenomicInteractions regions regions<-
 setMethod("resetAnnotations", "GenomicInteractions", function(GIObject){ 
     objName <- deparse(substitute(GIObject))
-    fsets <- regions(GIObject, type=NULL) 
+    fsets <- regions(GIObject, type="both") 
     for (i in seq_along(fsets)) {
         mcols(fsets[[i]]) <- NULL
     }
-    regions(GIObject, type=NULL) <- fsets
+    regions(GIObject, type="both") <- fsets
     assign(objName, GIObject, envir = parent.frame())
     invisible(NULL)
 })
@@ -69,7 +69,7 @@ setMethod("annotateRegions", c("GenomicInteractions", "character", "vector"), fu
 
     regs <- .get_single_regions(GIObject)
     mcols(regs)[[name]] <- dat
-    regions(GIObject, type=NULL) <- List(regs, regs)
+    regions(GIObject, type="both") <- List(regs, regs)
 
     assign(objName, GIObject, envir = parent.frame())
     invisible(1)
@@ -146,7 +146,7 @@ setMethod("annotateInteractions", c("GenomicInteractions", "list"), function(GIO
                                   "distal", mcols.reg$node.class)
     mcols(regs) <- mcols.reg
 
-    regions(GIObject, type=NULL) <- List(regs, regs)
+    regions(GIObject, type="both") <- List(regs, regs)
     assign(objName, GIObject, envir = parent.frame())
     invisible(1)
 })

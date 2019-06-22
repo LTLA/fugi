@@ -150,16 +150,11 @@ makeGenomicInteractionsFromFile <- function(fn, type=c("chiapet.tool", "bed12", 
       em = new("DataFrame", nrows = length(anchor_one))
     }
 	
-    giobject = GenomicInteractions(anchor_one, anchor_two,
-                 counts = counts,
-                 metadata = list(experiment_name = experiment_name, description = description),
-                 elementMetadata = em)
-    names(mcols(giobject)) <- gsub("elementMetadata.", "", names(mcols(giobject)))
-    
-    return(giobject)
-    
+    giobject = GenomicInteractions(anchor_one, anchor_two, counts = counts,
+        metadata = list(experiment_name = experiment_name, description = description))
+    mcols(giobject) <- cbind(mcols(giobject), em)
+    giobject
 }
-
 
 # import methods
 

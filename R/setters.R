@@ -68,9 +68,9 @@ setReplaceMethod("interactionCounts", "GenomicInteractions", function(GIObject, 
 setMethod("seqinfo<-", "GenomicInteractions", function(x, new2old = NULL, 
     pruning.mode = c("error", "coarse", "fine", "tidy"), value) 
 {
-    regs <- regions(x, type=NULL)
+    regs <- regions(x, type="both")
     seqinfo(regs[[1]], new2old=new2old, pruning.mode=match.arg(pruning.mode)) <- value
     seqinfo(regs[[2]], new2old=new2old, pruning.mode=match.arg(pruning.mode)) <- value
-    regions(x, type=NULL) <- regs
+    regions(x, type="both") <- regs
     x
 })
